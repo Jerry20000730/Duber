@@ -1,12 +1,11 @@
 # ECE568 - Homework 1 (in progress)
 
 ## Project Brief
-![duber icon]()
+<img src="duber.png" width=20% />
 
 Duber - an Django-based web-app that let users request, drive for, and join rides.
 
 ## Project Progress
-
 1. [ ] Create a user account
 2. [ ] Login with a valid user account
 3. [ ] Handle login failure with an an invalid user account
@@ -27,3 +26,8 @@ Duber - an Django-based web-app that let users request, drive for, and join ride
 18. [ ] A driver should be able to see a list of their confirmed rides
 19. [ ] A driver should be able to select a confirmed ride and view all of the ride details
 20. [ ] A driver should be able to edit a confirmed ride for the purpose of marking it complete after the ride is over
+
+## Team member
+Fangcheng Guo (fangcheng.guo@duke.edu)
+
+Kenan Duan (kenan.duan@duke.edu)
