@@ -1,9 +1,12 @@
 # ECE568 - Homework 1 (in progress)
+
 ## Project Brief
 ![duber icon]()
+
 Duber - an Django-based web-app that let users request, drive for, and join rides.
 
 ## Project Progress
+
 1. [ ] Create a user account
 2. [ ] Login with a valid user account
 3. [ ] Handle login failure with an an invalid user account
