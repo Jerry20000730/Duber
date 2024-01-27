@@ -6,9 +6,9 @@
 Duber - an Django-based web-app that let users request, drive for, and join rides.
 
 ## Project Progress
-1. [ ] Create a user account
-2. [ ] Login with a valid user account
-3. [ ] Handle login failure with an an invalid user account
+1. [x] Create a user account
+2. [x] Login with a valid user account
+3. [x] Handle login failure with an an invalid user account
 4. [ ] Logout from a user session
 5. [ ] User should be able to register as a driver by entering their personal & vehicle info
 6. [ ] User should be able to view and edit their driver status as well as personal & vehicle info
