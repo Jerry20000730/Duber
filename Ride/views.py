@@ -11,3 +11,9 @@ def setting(request):
 
 def request_ride(request):
     return HttpResponse("request ride")
+
+def edit_account(request):
+    return render(request, 'edit_account.html')
+
+def edit_driver(request):
+    return render(request,'edit_driver.html')
