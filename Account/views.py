@@ -55,3 +55,10 @@ def register(request):
         'form': form
     }
     return render(request, 'signup.html', context=context)
+
+def logout(request):
+    logout(request)
+    response = redirect(redirect('login'))
+    response.delete_cookie('username')
+    response.delete_cookie('password')
+    return response
