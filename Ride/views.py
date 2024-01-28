@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -10,4 +11,4 @@ def setting(request):
 
 
 def request_ride(request):
-    return HttpResponse("request ride")
+    return render(request, 'riderequest.html')
