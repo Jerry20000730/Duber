@@ -73,4 +73,12 @@ class DuberUser(AbstractBaseUser):
 
 
 class DuberDriver(models.Model):
+    class VehicleType(models.IntegerChoices):
+        DuberX = 1
+        DuberXL = 2
+        DuberComfort = 3
+
     duber_user = models.ForeignKey(DuberUser, on_delete=models.CASCADE, to_field='username')
+    vehicle_type = models.IntegerField(choices=VehicleType, default=VehicleType.DuberX)
+    licence_plate_number = models.CharField(max_length=50)
+    special_info = models.TextField()
