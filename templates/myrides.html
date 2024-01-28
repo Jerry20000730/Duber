@@ -15,6 +15,26 @@
 </head>
 
 <body class="d-flex flex-column h-100">
+    <div class="modal fade" tabindex="-1" id = "log-out-button">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Log Out</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure to Log Out?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <a type="button" class="btn btn-primary" role="button" href="{% url 'homepage' %}">Continue</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
     <nav class="navbar navbar-expand sticky-top py-3" style="height: 120px;width: auto;padding: 16px 0px;text-align: center;position: relative;overflow: visible;transform: translate(0px);">
         <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"><img class="border rounded" src="{% static 'img/duber.png' %}" width="50"></span><span>&nbsp;&nbsp;<strong style="color: #012169;">Duber</strong></span></a>
             <div class="collapse navbar-collapse" id="navcol-1">
@@ -30,7 +50,7 @@
                                 {% if user.id is not None %}<p class="lh-sm fw-light" style="margin-bottom: 0px;font-weight: bold;padding: 2px;padding-bottom: 0px;">Welcome {{ user.first_name }}<br><br></p>{% endif %}
                             </div>
                             <div class="col px-1"><a class="btn btn-primary" role="button" style="font-weight: bold;border-style: solid;">Settings</a></div>
-                            <div class="col align-middle"><a class="btn btn-primary text-bg-light px-1" role="button" href="{% url 'homepage' %}" >Logout</a></div>
+                            <div class="col align-middle"><button class="btn btn-primary text-bg-light px-1" role="button" data-bs-toggle="modal" data-bs-target="#log-out-button" >Logout</button></div>
                             
                         </div>
                     </div>
