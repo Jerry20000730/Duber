@@ -1,6 +1,8 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
 
+from Duber.settings import VehicleType
+
 
 class DuberUserManager(BaseUserManager):
     def create_user(self, username, first_name, last_name, email, phone_number, password=None):
@@ -73,11 +75,6 @@ class DuberUser(AbstractBaseUser):
 
 
 class DuberDriver(models.Model):
-    class VehicleType(models.IntegerChoices):
-        DuberX = 1
-        DuberXL = 2
-        DuberComfort = 3
-
     duber_user = models.ForeignKey(DuberUser, on_delete=models.CASCADE, to_field='username')
     vehicle_type = models.IntegerField(choices=VehicleType, default=VehicleType.DuberX)
     licence_plate_number = models.CharField(max_length=50)

@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>DuberLogin</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alfa+Slab+One&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allura&amp;display=swap">
+    <link rel="stylesheet" href="{% static 'css/bs-theme-overrides.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Banner-Heading-Image-images.css'%}">
+    <link rel="stylesheet" href="{% static 'css/Login-Form-Basic-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Multi-step-form.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Navbar-Centered-Links-icons.css' %}">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand sticky-top py-3" style="height: 120px;width: auto;padding: 16px 0px;text-align: center;position: relative;overflow: visible;transform: translate(0px);">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"><img class="border rounded" src="{% static 'img/duber.png' %}" width="50"></span><span>&nbsp;&nbsp;<strong style="color: #012169;">Duber</strong></span></a>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="#">My rides</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="#">Request new rides</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Search rides</a></li>
+                </ul>
+                <div class="row">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col px-1">
+                                {% if user.id is not None %}<p class="lh-sm fw-light" style="margin-bottom: 0px;font-weight: bold;padding: 2px;padding-bottom: 0px;">Welcome {{ user.first_name }}</p>{% endif %}
+                            </div>
+                            <div class="col px-1"><a class="btn btn-primary" role="button" style="font-weight: bold;border-style: solid;">Settings</a></div>
+                            <div class="col align-middle"><a class="btn btn-primary text-bg-light px-1" role="button">Logout</a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="w-75 p-4 mx-auto">
+        <div style="margin: 0px;">
+            <div class="card" style="box-shadow: 2px 0px 3px 1px;">
+                <div class="card-body d-flex flex-column align-items-center">
+                    <h4 class="card-title" style="border-color: var(--bs-primary);color: var(--bs-primary);font-weight: bold;">Request Your Duber Ride</h4>
+                    <h6 class="text-muted card-subtitle mb-2" style="font-family: Allura, serif;font-weight: bold;font-size: 20px;">I'm gon' ride, I'm gon' ride</h6>
+                    <div class="w-100 m-auto" style="padding-right: 20px;padding-left: 20px;">
+                        <form>
+                            <div class="row mb-3">
+                                <div class="col col-sm-2"><label class="col-form-label" style="color: var(--bs-primary);font-weight: bold;">Destination Addr.</label></div>
+                                <div class="col"><input class="form-control col-sm-10" type="text" placeholder="1234 Main St."></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col col-sm-2"><label class="col-form-label" style="color: var(--bs-primary);font-weight: bold;">Arrival Time</label></div>
+                                <div class="col"><input class="form-control" type="datetime-local"></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col col-sm-2"><label class="col-form-label" style="color: var(--bs-primary);font-weight: bold;">Num. of Passengers</label></div>
+                                <div class="col"><input class="form-control" type="number" min="1" value="1"><span style="color: var(--bs-primary);font-style: italic;font-size: 13px;">The number of passenger must be larger than zero</span></div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1" style="color: var(--bs-primary);font-weight: bold;">ride can be shared</label></div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <div class="accordion" role="tablist" id="optional_settings">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">Optional Extra Settings</button>
+                                            </h2>
+                                            <div class="accordion-collapsed collapse" id="collapseOne" data-bs-parent="#optional_settings">
+                                                <div class="accordion-body">
+                                                    <div id="vehicle_type_optional" class="mb-3">
+                                                        <h5 style="color: var(--bs-primary);font-weight: bold;">Choose desired Vehicle Type</h5>
+                                                        <div class="form-check"><input class="form-check-input" type="radio" id="duberXChoice"><label class="form-check-label" for="formCheck-2">DuberX</label></div>
+                                                        <div class="form-check"><input class="form-check-input" type="radio" id="DuberXLChoice"><label class="form-check-label" for="formCheck-3">DuberXL</label></div>
+                                                        <div class="form-check"><input class="form-check-input" type="radio" id="duberLuxuryChoice"><label class="form-check-label" for="duberXChoice-1">Duber Luxury</label></div>
+                                                    </div>
+                                                    <div id="special_request" class="mb-3">
+                                                        <h5 style="color: var(--bs-primary);font-weight: bold;">Special Request</h5><textarea class="form-control"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col" style="text-align:center"><button class="btn btn-primary col-sm-5" type="button" style="border-radius: 6px;">Request</button></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="text-center bg-primary mt-auto w-100" style="height: 218.983px">
+        <div class="container text-white py-4 py-lg-5">
+            <ul class="list-inline">
+                <li class="list-inline-item me-4"><a class="link-light" href="#">Home</a></li>
+                <li class="list-inline-item me-4"><a class="link-light" href="#">About</a></li>
+                <li class="list-inline-item"><a class="link-light" href="#">Contact</a></li>
+            </ul>
+            <p style="color: var(--bs-white);">Created by Fangcheng (fg96) and Kenan (kd305)</p>
+            <p style="color: var(--bs-white);">Copyright © 2024 Duber</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/bs-init.js' %}"></script>
+    <script src="{% static 'js/Multi-step-form-script.js' %}"></script>
+</body>
+
+</html>

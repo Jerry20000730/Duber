@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
 
@@ -8,12 +9,13 @@ def myrides(request):
 def setting(request):
     return render(request, 'setting.html')
 
-
 def request_ride(request):
-    return HttpResponse("request ride")
+    return render(request, 'riderequest.html')
 
 def edit_account(request):
     return render(request, 'edit_account.html')
 
 def edit_driver(request):
     return render(request,'edit_driver.html')
+    
+
