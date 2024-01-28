@@ -187,3 +187,6 @@ fabric.properties
 # Only for Development only
 **/migrations
 **/migrations/__init__.py
+
+# bootstrap studio files
+Bootstrap Studio Files
