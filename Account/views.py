@@ -25,7 +25,6 @@ def login(request):
 def register(request):
     if request.method == 'POST':
         form = DuberUserRegistrationForm(request.POST)
-        print(form.is_bound)
         if form.is_valid():
             username = form.cleaned_data['username']
             first_name = form.cleaned_data['first_name']

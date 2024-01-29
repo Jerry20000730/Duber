@@ -42,7 +42,7 @@ class DuberUserManager(BaseUserManager):
 
 # Create your models here.
 class DuberUser(AbstractBaseUser):
-    username = models.CharField(max_length=50, unique=True)
+    username = models.CharField(max_length=50, unique=True, primary_key=True)
     email = models.EmailField(max_length=100, unique=True)
     phone_number = models.CharField(max_length=50)
     first_name = models.CharField(max_length=50)
@@ -75,7 +75,8 @@ class DuberUser(AbstractBaseUser):
 
 
 class DuberDriver(models.Model):
-    duber_user = models.ForeignKey(DuberUser, on_delete=models.CASCADE, to_field='username')
+    duber_user = models.OneToOneField(DuberUser, on_delete=models.CASCADE, to_field='username', primary_key=True)
     vehicle_type = models.IntegerField(choices=VehicleType, default=VehicleType.DuberX)
     licence_plate_number = models.CharField(max_length=50)
-    special_info = models.TextField()
+    maximum_passenger_number = models.PositiveIntegerField(default=4, blank=False, null=False)
+    special_info = models.TextField(blank=True, null=True)

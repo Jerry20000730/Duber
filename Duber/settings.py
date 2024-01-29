@@ -79,9 +79,9 @@ AUTH_USER_MODEL = "Account.DuberUser"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "DuberTest",
-        "USER": "Kenan",
-        "PASSWORD": "120023",
+        "NAME": "duber_testdatabase",
+        "USER": "Fangcheng",
+        "PASSWORD": "gfc20000730",
         "HOST": "127.0.0.1",
         "PORT": "5432"
     }
