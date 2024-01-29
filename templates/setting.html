@@ -69,23 +69,13 @@
                     <div class="tab-pane active" role="tabpanel" id="tab-1">
                         <div class="card mb-5">
                             <div class="card-body d-flex flex-column" style="box-shadow: 1px 1px 11px 1px var(--bs-emphasis-color);">
-                                <form method="post">
+                                <form>
                                     <div class="mb-3">
                                         <div class="container">
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong class="align-middle">Username:</strong></div>
                                                 <div class="col col-md-8">
-                                                    <input class="form-control-plaintext" type="text" name="username" value="JackSparrow" readonly>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-xxl-3 col-md-3"><strong class="align-middle">Password:</strong></div>
-                                                <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder=""readonly>
+                                                    <input class="form-control-plaintext" type="text" name="username" value="{{ username }}" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -95,7 +85,7 @@
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong class="align-middle">First Name:</strong></div>
                                                 <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder=""readonly>
+                                                    <input class="form-control-plaintext" type="text" name="first_name" placeholder="" value="{{ first_name }}" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -105,7 +95,7 @@
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong class="align-middle">Last Name:</strong></div>
                                                 <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder=""readonly>
+                                                    <input class="form-control-plaintext" type="text" name="last_name" placeholder="" value="{{ last_name }}" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -115,7 +105,7 @@
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong class="align-middle">Email:</strong></div>
                                                 <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder="" readonly>
+                                                    <input class="form-control-plaintext" type="text" name="email" placeholder=""  value="{{ email }}"readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -125,7 +115,7 @@
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong class="align-middle">Phone Number:</strong></div>
                                                 <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder=""readonly>
+                                                    <input class="form-control-plaintext" type="text" name="phone_number" placeholder="" value="{{ phone_number }}" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -146,7 +136,7 @@
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong class="align-middle">Username:</strong></div>
                                                 <div class="col col-md-8"><label>
-                                                    <input class="form-control-plaintext" type="text" name="username" value="JackSparrow" readonly>
+                                                    <input class="form-control-plaintext" type="text" name="username" value="{{ username }}" readonly>
                                                 </label></div>
                                             </div>
                                         </div>
@@ -156,23 +146,23 @@
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong class="align-middle">Are you a driver:</strong></div>
                                                 <div class="col col-md-8"><label>
-                                                    <input class="form-control-plaintext" type="text" name="Are you a driver" value="No" readonly>
+                                                    {% if are_you_a_driver == False %}<input class="form-control-plaintext" type="text" name="Are you a driver" value="No" readonly>{% endif %}
+                                                    {% if are_you_a_driver == True %}<input class="form-control-plaintext" type="text" name="Are you a driver" value="Yes"  readonly>{% endif %}
                                                 </label></div>
                                             </div>
                                         </div>
                                     </div>
-                                        <div id="driverContent" class="mb-3" style="display: none;">
+                                    {% if are_you_a_driver == True %}
+                                        <div id="driverContent" class="mb-3" style="display: block;">
                                         <div class="mb-3">
                                             <div class="container">
                                                 <div class="row">
                                                     <div class="col-xxl-3 col-md-3"><strong class="align-middle">Vehicle Type:</strong></div>
                                                     <div class="col col-md-8">
-                                                        <select class="form-select" id="vehicleType" onchange="updatePassengerCount()">
-                                                            <option value="11">Choose...</option>
-                                                            <option value="12">DuberX</option>
-                                                            <option value="13">DuberXL</option>
-                                                            <option value="14">Duber Luxury</option>
-                                                        </select></div>
+                                                        {% if vehicle_type == 1 %}<input class="form-control-plaintext" type="text" name="vehicle_type" value="DuberX" readonly>{% endif %}
+                                                        {% if vehicle_type == 2 %}<input class="form-control-plaintext" type="text" name="vehicle_type" value="DuberXL" readonly>{% endif %}
+                                                        {% if vehicle_type == 3 %}<input class="form-control-plaintext" type="text" name="vehicle_type" value="Duber Luxury" readonly>{% endif %}
+                                                        </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -191,7 +181,7 @@
                                                 <div class="row">
                                                     <div class="col-xxl-3 col-md-3"><strong class="align-middle" >Licence Number:</strong></div>
                                                     <div class="col col-md-8">
-                                                        <input class="form-control" type="text" name="username" placeholder="" readonly>
+                                                        <input class="form-control-plaintext" type="text" name="username" placeholder="" value="{{ licence_number }}"readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -207,6 +197,7 @@
                                             </div>
                                         </div>
                                         </div>
+                                    {% endif %}
                                         <div class="float-end">
                                         
                                     <a class="btn btn-primary " type="button" href="{% url 'edit_driver' %}">Edit</a>
@@ -264,9 +255,10 @@
 
         // 获取选中的选项值
         var selectedValue = chooseIdentitySelect.value;
-
+        
         // 根据选项值控制后续元素的可见性
-        if (selectedValue === "121") {
+        if (selectedValue === "Yes" || {% if are_you_a_driver == True %}true{% endif %}) {
+            console.log("here")
             driverContent.style.display = "block"; // 显示内容
         } else {
             driverContent.style.display = "none"; // 隐藏内容
