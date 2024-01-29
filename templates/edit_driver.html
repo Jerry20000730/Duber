@@ -152,14 +152,15 @@
                                         <div class="container">
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong class="align-middle">Are you a driver:</strong></div>
-                                                <div class="col col-md-8"><select class="form-select" id="chooseIdentity">
-                                                        <option value="11">Choose...</option>
-                                                        <option value="12">Yes</option>
-                                                        <option value="13">No</option>
+                                                <div class="col col-md-8"><select class="form-select" id="chooseIdentity" onchange="toggleDriverContent()">
+                                                        <option value="111">Choose...</option>
+                                                        <option value="121">Yes</option>
+                                                        <option value="131">No</option>
                                                     </select></div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div id="driverContent" class="mb-3" style="display: none;">
                                     <div class="mb-3">
                                         <div class="container">
                                             <div class="row">
@@ -205,7 +206,7 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    </div>
                                     <div class="float-end"><button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#save-info">Save</button></div>
                                 </form>
                             </div>
@@ -257,6 +258,22 @@
 
     function redirectToSetting() {
         window.location.href = "{% url 'setting' %}";
+    }
+</script>
+<script>
+    function toggleDriverContent() {
+        var chooseIdentitySelect = document.getElementById("chooseIdentity");
+        var driverContent = document.getElementById("driverContent");
+
+        // 获取选中的选项值
+        var selectedValue = chooseIdentitySelect.value;
+
+        // 根据选项值控制后续元素的可见性
+        if (selectedValue === "121") {
+            driverContent.style.display = "block"; // 显示内容
+        } else {
+            driverContent.style.display = "none"; // 隐藏内容
+        }
     }
 </script>
 </body>
