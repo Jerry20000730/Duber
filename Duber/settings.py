@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = "django-insecure-g11_+zx^z6dr$+ck%*h95j=j5lsayu*n-+p#&%e@w#c4c_mexz
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -81,14 +79,13 @@ AUTH_USER_MODEL = "Account.DuberUser"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "DuberTest",
-        "USER": "Kenan",
-        "PASSWORD": "120023",
+        "NAME": "duber_testdatabase",
+        "USER": "Fangcheng",
+        "PASSWORD": "gfc20000730",
         "HOST": "127.0.0.1",
         "PORT": "5432"
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -108,7 +105,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -119,7 +115,6 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -135,6 +130,22 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 from django.contrib.messages import constants as messages
+
 MESSAGE_TAGS = {
     messages.ERROR: "danger",
 }
+
+from django.db import models
+
+
+class RideStatus(models.IntegerChoices):
+    OPEN = 1
+    CONFIRM = 2
+    PICKED = 3
+    COMPLETE = 4
+
+
+class VehicleType(models.IntegerChoices):
+    DuberX = 1
+    DuberXL = 2
+    DuberLuxury = 3

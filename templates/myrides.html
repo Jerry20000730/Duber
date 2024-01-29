@@ -47,11 +47,10 @@
                     <div class="col">
                         <div class="row">
                             <div class="col px-1">
-                                {% if user.id is not None %}<p class="lh-sm fw-light" style="margin-bottom: 0px;font-weight: bold;padding: 2px;padding-bottom: 0px;">Welcome {{ user.first_name }}<br><br></p>{% endif %}
+                                {% if user.id is not None %}<p class="lh-sm fw-light" style="margin-bottom: 0px;font-weight: bold;padding: 2px;padding-bottom: 0px;">Welcome {{ user.first_name }}</p>{% endif %}
                             </div>
                             <div class="col px-1"><a class="btn btn-primary" role="button" style="font-weight: bold;border-style: solid;" href="{% url 'setting' %}">Settings</a></div>
                             <div class="col align-middle"><button class="btn btn-primary text-bg-light px-1" role="button" data-bs-toggle="modal" data-bs-target="#log-out-button" >Logout</button></div>
-                            
                         </div>
                     </div>
                 </div>
@@ -217,17 +216,6 @@
             </div>
             </div>
         </div>
-        <nav>
-            <ul class="pagination">
-                <li class="page-item"><a class="page-link" aria-label="Previous" href="#"><span aria-hidden="true">«</span></a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span aria-hidden="true">»</span></a></li>
-            </ul>
-        </nav>
     </div>
     <footer class="text-center bg-primary mt-auto w-100" style="height: 218.983px">
         <div class="container text-white py-4 py-lg-5">
