@@ -6,9 +6,13 @@ from django.shortcuts import render, redirect
 from Account.models import DuberDriver
 
 
+from Ride.forms import DuberRideRequestForm
+
+
 # Create your views here.
 def myrides(request):
     return render(request, 'myrides.html')
+
 
 def setting(request):
     username = request.user.username
@@ -40,8 +44,17 @@ def setting(request):
     }
     return render(request, 'setting.html', context=context)
 
+
 def request_ride(request):
-    return render(request, 'riderequest.html')
+    if request.method == 'POST':
+        print(request.POST)
+    else:
+        form = DuberRideRequestForm()
+        context = {
+            'form': form
+        }
+        return render(request, 'riderequest.html', context=context)
+
 
 def edit_account(request):
     if request.method == 'GET':
@@ -88,5 +101,3 @@ def edit_driver(request):
             'special_vehicle_info': special_vehicle_info,
         }
         return render(request,'edit_driver.html',context=context)
-    
-
