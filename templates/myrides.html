@@ -15,6 +15,28 @@
 </head>
 
 <body class="d-flex flex-column h-100">
+    <nav class="navbar navbar-expand sticky-top py-3" style="height: 120px;width: auto;padding: 16px 0px;text-align: center;position: relative;overflow: visible;transform: translate(0px);">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"><img class="border rounded" src="{% static 'img/duber.png' %}" width="50"></span><span>&nbsp;&nbsp;<strong style="color: #012169;">Duber</strong></span></a>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'myrides' %}">My rides</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'request_ride' %}">Request new rides</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Search rides</a></li>
+                </ul>
+                <div class="row">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col px-1">
+                                {% if user.id is not None %}<p class="lh-sm fw-light" style="margin-bottom: 0px;font-weight: bold;padding: 2px;padding-bottom: 0px;">Welcome {{ user.first_name }}</p>{% endif %}
+                            </div>
+                            <div class="col px-1"><a class="btn btn-primary" role="button" style="font-weight: bold;border-style: solid;" href="{% url 'setting' %}">Settings</a></div>
+                            <div class="col align-middle"><button class="btn btn-primary text-bg-light px-1" role="button" data-bs-toggle="modal" data-bs-target="#log-out-button" >Logout</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
     <div class="modal fade" tabindex="-1" id = "log-out-button">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -32,31 +54,6 @@
         </div>
       </div>
     </div>
-
-
-
-    <nav class="navbar navbar-expand sticky-top py-3" style="height: 120px;width: auto;padding: 16px 0px;text-align: center;position: relative;overflow: visible;transform: translate(0px);">
-        <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"><img class="border rounded" src="{% static 'img/duber.png' %}" width="50"></span><span>&nbsp;&nbsp;<strong style="color: #012169;">Duber</strong></span></a>
-            <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#">My rides</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Request new rides</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Search rides</a></li>
-                </ul>
-                <div class="row">
-                    <div class="col">
-                        <div class="row">
-                            <div class="col px-1">
-                                {% if user.id is not None %}<p class="lh-sm fw-light" style="margin-bottom: 0px;font-weight: bold;padding: 2px;padding-bottom: 0px;">Welcome {{ user.first_name }}</p>{% endif %}
-                            </div>
-                            <div class="col px-1"><a class="btn btn-primary" role="button" style="font-weight: bold;border-style: solid;" href="{% url 'setting' %}">Settings</a></div>
-                            <div class="col align-middle"><button class="btn btn-primary text-bg-light px-1" role="button" data-bs-toggle="modal" data-bs-target="#log-out-button" >Logout</button></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
     <div class="w-75 p-3 mx-auto" style="border-radius: 15px;">
         <div>
             <h2 style="padding-top: 10px;padding-left: 15px;padding-bottom: 5px;padding-right: 15px;">My Duber Rides</h2>
@@ -217,7 +214,7 @@
             </div>
         </div>
     </div>
-    <footer class="text-center bg-primary mt-auto w-100" style="height: 218.983px">
+    <footer class="text-center bg-primary mt-auto w-100" style="height: 218.983px;">
         <div class="container text-white py-4 py-lg-5">
             <ul class="list-inline">
                 <li class="list-inline-item me-4"><a class="link-light" href="#">Home</a></li>
