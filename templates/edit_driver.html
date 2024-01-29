@@ -65,85 +65,17 @@
                     <li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#tab-2">Driver Info</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane " role="tabpanel" id="tab-1">
-                        <div class="card mb-5">
-                            <div class="card-body d-flex flex-column" style="box-shadow: 1px 1px 11px 1px var(--bs-emphasis-color);">
-                                <form method="post">
-                                    <div class="mb-3">
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-xxl-3 col-md-3"><strong class="align-middle">Username:</strong></div>
-                                                <div class="col col-md-8">
-                                                    <input class="form-control-plaintext" type="text" name="username" value="JackSparrow" readonly>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-xxl-3 col-md-3"><strong class="align-middle">Password:</strong></div>
-                                                <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-xxl-3 col-md-3"><strong class="align-middle">First Name:</strong></div>
-                                                <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-xxl-3 col-md-3"><strong class="align-middle">Last Name:</strong></div>
-                                                <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-xxl-3 col-md-3"><strong class="align-middle">Email:</strong></div>
-                                                <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <div class="container">
-                                            <div class="row">
-                                                <div class="col-xxl-3 col-md-3"><strong class="align-middle">Phone Number:</strong></div>
-                                                <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="float-end"><a class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#save-info" >Save</a></div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
                     <div class="tab-pane active" role="tabpanel" id="tab-2">
                        <div class="card mb-5">
                             <div class="card-body d-flex flex-column" style="box-shadow: 1px 1px 11px 1px var(--bs-emphasis-color);">
-                                <form method="post">
+                                <form id="edit_driver_form" method="post" >
+                                    {% csrf_token %}
                                     <div class="mb-3">
                                         <div class="container">
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong class="align-middle">Username:</strong></div>
                                                 <div class="col col-md-8"><label>
-                                                    <input class="form-control-plaintext" type="text" name="username" value="JackSparrow" readonly>
+                                                    <input class="form-control-plaintext" type="text" name="username" value="{{ username }}" readonly>
                                                 </label></div>
                                             </div>
                                         </div>
@@ -166,7 +98,7 @@
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong class="align-middle">Vehicle Type:</strong></div>
                                                 <div class="col col-md-8">
-                                                    <select class="form-select" id="vehicleType" onchange="updatePassengerCount()">
+                                                    <select class="form-select" id="vehicleType" name="are_you_a_driver" onchange="updatePassengerCount()">
                                                         <option value="11">Choose...</option>
                                                         <option value="12">DuberX</option>
                                                         <option value="13">DuberXL</option>
@@ -181,7 +113,7 @@
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong>Maximum Number of Passengers:</strong></div>
                                                 <div class="col col-md-8">
-                                                    <input class="form-control " type="text" id="passengerCount" name="Maximum Number of Passengers" placeholder="" value="" readonly>
+                                                    <input class="form-control " type="text" id="passengerCount" name="maximum_number_of_passengers" placeholder="" value="" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -191,7 +123,7 @@
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong class="align-middle" >Licence Number:</strong></div>
                                                 <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder="">
+                                                    <input class="form-control" type="text" name="licence_number" placeholder="">
                                                 </div>
                                             </div>
                                         </div>
@@ -201,7 +133,7 @@
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong >Special Vehicle Info:</strong></div>
                                                 <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder="">
+                                                    <input class="form-control" type="text" name="special_vehicle_info" placeholder="">
                                                 </div>
                                             </div>
                                         </div>
@@ -246,7 +178,7 @@
                 passengerCountInput.value = "4"; // 设置为对应的值
                 break;
             case "13":
-                passengerCountInput.value = "6-8";
+                passengerCountInput.value = "6";
                 break;
             case "14":
                 passengerCountInput.value = "4";
