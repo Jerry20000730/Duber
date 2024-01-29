@@ -9,6 +9,13 @@ def myrides(request):
 def setting(request):
     return render(request, 'setting.html')
 
-
 def request_ride(request):
     return render(request, 'riderequest.html')
+
+def edit_account(request):
+    return render(request, 'edit_account.html')
+
+def edit_driver(request):
+    return render(request,'edit_driver.html')
+    
+

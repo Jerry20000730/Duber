@@ -14,12 +14,12 @@
     <link rel="stylesheet" href="{% static 'css/Login-Form-Basic-icons.css' %}">
     <link rel="stylesheet" href="{% static 'css/Multi-step-form.css' %}">
     <link rel="stylesheet" href="{% static 'css/Navbar-Centered-Links-icons.css' %}">
-    
-    
+
+
 </head>
 
 <body>
-    
+
     <div class="modal fade" tabindex="-1" id = "save-info">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -32,7 +32,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <a type="button" class="btn btn-primary" role="button" data-bs-dismiss="modal">Continue</a>
+            <a class="btn btn-primary" data-bs-dismiss="modal" href="#" onclick="redirectToSetting()">Continue</a>
           </div>
         </div>
       </div>
@@ -62,8 +62,7 @@
         <div class="m-auto">
             <div>
                 <ul class="nav nav-tabs" role="tablist">
-                    <li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#tab-1">Account Info</a></li>
-                    <li class="nav-item" role="presentation"><a class="nav-link" role="tab" data-bs-toggle="tab" href="#tab-2">Driver Info</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link active" role="tab" data-bs-toggle="tab" href="#tab-2">Driver Info</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" role="tabpanel" id="tab-1">
@@ -85,7 +84,7 @@
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong class="align-middle">Password:</strong></div>
                                                 <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder=""readonly>
+                                                    <input class="form-control" type="text" name="username" placeholder="">
                                                 </div>
                                             </div>
                                         </div>
@@ -95,7 +94,7 @@
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong class="align-middle">First Name:</strong></div>
                                                 <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder=""readonly>
+                                                    <input class="form-control" type="text" name="username" placeholder="">
                                                 </div>
                                             </div>
                                         </div>
@@ -105,7 +104,7 @@
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong class="align-middle">Last Name:</strong></div>
                                                 <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder=""readonly>
+                                                    <input class="form-control" type="text" name="username" placeholder="">
                                                 </div>
                                             </div>
                                         </div>
@@ -115,7 +114,7 @@
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong class="align-middle">Email:</strong></div>
                                                 <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder="" readonly>
+                                                    <input class="form-control" type="text" name="username" placeholder="">
                                                 </div>
                                             </div>
                                         </div>
@@ -125,14 +124,12 @@
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong class="align-middle">Phone Number:</strong></div>
                                                 <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder=""readonly>
+                                                    <input class="form-control" type="text" name="username" placeholder="">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="float-end">
-                                        <a class="btn btn-primary" type="button" href="{% url 'edit_account' %}">Edit</a>
-                                    </div>
+                                    <div class="float-end"><a class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#save-info" >Save</a></div>
                                 </form>
                             </div>
                         </div>
@@ -173,6 +170,7 @@
                                                         <option value="12">DuberX</option>
                                                         <option value="13">DuberXL</option>
                                                         <option value="14">Duber Luxury</option>
+
                                                     </select></div>
                                             </div>
                                         </div>
@@ -192,7 +190,7 @@
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong class="align-middle" >Licence Number:</strong></div>
                                                 <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder="" readonly>
+                                                    <input class="form-control" type="text" name="username" placeholder="">
                                                 </div>
                                             </div>
                                         </div>
@@ -202,14 +200,13 @@
                                             <div class="row">
                                                 <div class="col-xxl-3 col-md-3"><strong >Special Vehicle Info:</strong></div>
                                                 <div class="col col-md-8">
-                                                    <input class="form-control" type="text" name="username" placeholder="" readonly>
+                                                    <input class="form-control" type="text" name="username" placeholder="">
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="float-end">
-                                    <a class="btn btn-primary " type="button" href="{% url 'edit_driver' %}">Edit</a>
-                                        <div>
+
+                                    <div class="float-end"><button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#save-info">Save</button></div>
                                 </form>
                             </div>
                         </div>
@@ -245,6 +242,10 @@
             default:
                 passengerCountInput.value = ""; // 或者设置为默认值
         }
+    }
+
+    function redirectToSetting() {
+        window.location.href = "{% url 'setting' %}";
     }
 </script>
 </body>
