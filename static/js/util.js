@@ -37,3 +37,26 @@ function validateForm() {
     return !isError;
 }
 
+function validateRideRequest() {
+    var dst_addr = document.forms["RideRequestForm"]["dst_addr"].value;
+    var owner_desired_arrival_time = document.forms["RideRequestForm"]["owner_desired_arrival_time"].value;
+    var num_passengers_owner_party = document.forms["RideRequestForm"]["num_passengers_owner_party"].value;
+    var message = "";
+    var isError = false;
+    if (dst_addr == null || dst_addr === "") {
+        message += "Destination address is blank, please fill in all required fields\n";
+        isError = true;
+    }
+    if (owner_desired_arrival_time == null || owner_desired_arrival_time === "") {
+        message += "Desired arrival time is blank, please fill in all required fields\n";
+        isError = true;
+    }
+    if (num_passengers_owner_party == null || num_passengers_owner_party === "") {
+        message += "Number of passengers is blank, please fill in all required fields\n";
+        isError = true;
+    }
+    if (isError) {
+        alert(message)
+    }
+    return !isError;
+}

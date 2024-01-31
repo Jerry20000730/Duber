@@ -75,7 +75,7 @@ class DuberUser(AbstractBaseUser):
 
 
 class DuberDriver(models.Model):
-    duber_user = models.OneToOneField(DuberUser, on_delete=models.CASCADE, to_field='username', primary_key=True)
+    duber_user = models.OneToOneField(DuberUser, on_delete=models.CASCADE, to_field='username', related_name='driver_username', unique=True, primary_key=True)
     vehicle_type = models.IntegerField(choices=VehicleType, default=VehicleType.DuberX)
     licence_plate_number = models.CharField(max_length=50)
     maximum_passenger_number = models.PositiveIntegerField(default=4, blank=False, null=False)
