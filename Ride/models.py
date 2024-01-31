@@ -22,6 +22,7 @@ class Ride(models.Model):
 
     dst_addr = models.CharField(max_length=100)
     owner_desired_arrival_time = models.DateTimeField(blank=False, null=False, default=half_hour_from_now())
+
     num_passengers_owner_party = models.PositiveIntegerField()
     is_shareable = models.BooleanField(default=False)
     owner_desired_vehicle_type = models.IntegerField(choices=VehicleType, blank=True, null=True)
@@ -29,7 +30,7 @@ class Ride(models.Model):
 
     status = models.IntegerField(choices=RideStatus, default=RideStatus.OPEN)
     time_created = models.DateTimeField(auto_now_add=True)
-    time_uptate = models.DateTimeField(auto_now=True)
+    time_updated = models.DateTimeField(auto_now=True)
     time_complete = models.DateTimeField(blank=True, null=True)
 
     class Meta:
