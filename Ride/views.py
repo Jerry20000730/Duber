@@ -11,7 +11,8 @@ from Ride.models import Ride
 def myrides(request):
     owner_rides = Ride.objects.filter(owner=request.user)
     if request.user.is_driver:
-        driver_rides = Ride.objects.filter(driver=request.user)
+        driver = DuberDriver.objects.filter(duber_user=request.user).first()
+        driver_rides = Ride.objects.filter(driver=driver)
     else:
         driver_rides = []
     sharer_rides = Ride.objects.filter(sharer=request.user)
