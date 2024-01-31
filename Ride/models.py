@@ -17,7 +17,7 @@ class Ride(models.Model):
     sharer = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
     dst_addr = models.CharField(max_length=100)
-    owner_desired_arrival_time = models.DateTimeField(blank=False, null=False)
+    owner_desired_arrival_time = models.DateTimeField(blank=False, null=False, default='2021-01-01 00:00:00')
     num_passengers_owner_party = models.PositiveIntegerField()
     is_shareable = models.BooleanField(default=False)
     owner_desired_vehicle_type = models.IntegerField(choices=VehicleType, blank=True, null=True)

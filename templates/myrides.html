@@ -27,7 +27,7 @@
                     <div class="col">
                         <div class="row">
                             <div class="col px-1">
-                                {% if user.id is not None %}<p class="lh-sm fw-light" style="margin-bottom: 0px;font-weight: bold;padding: 2px;padding-bottom: 0px;">Welcome {{ user.first_name }}</p>{% endif %}
+                               <p class="lh-sm fw-light" style="margin-bottom: 0px;font-weight: bold;padding: 2px;padding-bottom: 0px;">Welcome {{ user.first_name }}</p>
                             </div>
                             <div class="col px-1"><a class="btn btn-primary" role="button" style="font-weight: bold;border-style: solid;" href="{% url 'setting' %}">Settings</a></div>
                             <div class="col align-middle"><button class="btn btn-primary text-bg-light px-1" role="button" data-bs-toggle="modal" data-bs-target="#log-out-button" >Logout</button></div>

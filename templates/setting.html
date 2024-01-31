@@ -170,7 +170,7 @@
                                                 <div class="row">
                                                     <div class="col-xxl-3 col-md-3"><strong>Maximum Number of Passengers:</strong></div>
                                                     <div class="col col-md-8">
-                                                        <input class="form-control " type="text" id="passengerCount" name="Maximum Number of Passengers" placeholder="" value="" readonly>
+                                                        <input class="form-control-plaintext " type="text" id="passengerCount" name="Maximum Number of Passengers" placeholder="" value="{{ maximum_passenger_number }}" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -190,7 +190,7 @@
                                                 <div class="row">
                                                     <div class="col-xxl-3 col-md-3"><strong >Special Vehicle Info:</strong></div>
                                                     <div class="col col-md-8">
-                                                        <input class="form-control" type="text" name="username" placeholder="" readonly>
+                                                        <input class="form-control-plaintext" type="text" name="username" placeholder="" value="{{ special_vehicle_info }}"readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -257,7 +257,6 @@
         
         // 根据选项值控制后续元素的可见性
         if (selectedValue === "Yes" || {% if are_you_a_driver == True %}true{% endif %}) {
-            console.log("here")
             driverContent.style.display = "block"; // 显示内容
         } else {
             driverContent.style.display = "none"; // 隐藏内容
