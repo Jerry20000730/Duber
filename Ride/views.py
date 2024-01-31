@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from Account.models import DuberDriver
@@ -175,12 +176,7 @@ def edit_driver(request):
             new_identity = False
             print("here2")
 
-        if (new_identity == False):
-            new_vehicle_type = '1'
-            new_maximum_passenger_number = '4'
-            new_licence_number = ''
-            new_special_vehicle_info = ''
-        else:
+        if (new_identity == True):
             new_vehicle_type = request.POST['vehicle_type']
             new_maximum_passenger_number = request.POST['maximum_number_of_passengers']
             new_licence_number = request.POST['licence_number']
@@ -188,10 +184,26 @@ def edit_driver(request):
 
         user_model = get_user_model()
         user_model.objects.filter(username=request.user.username).update(is_driver=new_identity)
-        DuberDriver.objects.filter(duber_user=request.user.username).update(vehicle_type=new_vehicle_type)
-        DuberDriver.objects.filter(duber_user=request.user.username).update(licence_plate_number=new_licence_number)
-        DuberDriver.objects.filter(duber_user=request.user.username).update(maximum_passenger_number=new_maximum_passenger_number)
-        DuberDriver.objects.filter(duber_user=request.user.username).update(special_info=new_special_vehicle_info)
+        current_username = request.user.username
+        duber_user = user_model.objects.filter(username=current_username).first()
+        if (new_identity==True):
+            exists = DuberDriver.objects.filter(duber_user=duber_user).exists()
+            if (exists):
+                new_driver = DuberDriver.objects.filter(duber_user=duber_user)
+                new_driver.update(vehicle_type=new_vehicle_type)
+                new_driver.update(licence_plate_number = new_licence_number)
+                new_driver.update(maximum_passenger_number = new_maximum_passenger_number)
+                new_driver.update(special_info = new_special_vehicle_info)
+            else:
+                new_driver = DuberDriver.objects.create(duber_user=duber_user)
+
+                new_driver.vehicle_type = new_vehicle_type
+                new_driver.licence_plate_number = new_licence_number
+                new_driver.maximum_passenger_number = new_maximum_passenger_number
+                new_driver.special_info = new_special_vehicle_info
+                new_driver.save()
+        else:
+            DuberDriver.objects.filter(duber_user=request.user.username).delete()
 
         return redirect('setting')
 
