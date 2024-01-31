@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from Account.models import DuberUser
+from Account.models import DuberUser, DuberDriver
 
 
 # Register your models here.
@@ -17,3 +17,4 @@ class DuberUserAdmin(UserAdmin):
 
 
 admin.site.register(DuberUser, DuberUserAdmin)
+admin.site.register(DuberDriver)

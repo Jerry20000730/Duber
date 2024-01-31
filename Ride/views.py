@@ -1,17 +1,30 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
-
+from django.contrib import messages
 from Account.models import DuberDriver
-
-
 from Ride.forms import DuberRideRequestForm
+from Ride.models import Ride
 
 
 # Create your views here.
 def myrides(request):
-    return render(request, 'myrides.html')
+    owner_rides = Ride.objects.filter(owner=request.user)
+    if request.user.is_driver:
+        driver_rides = Ride.objects.filter(driver=request.user)
+    else:
+        driver_rides = []
+    sharer_rides = Ride.objects.filter(sharer=request.user)
+    context = {
+        'owner_rides': owner_rides,
+        'driver_rides': driver_rides,
+        'sharer_rides': sharer_rides,
+        'owner_rides_number': len(owner_rides),
+        'driver_rides_number': len(driver_rides),
+        'sharer_rides_number': len(sharer_rides),
+        'my_ride_number': len(owner_rides) + len(driver_rides) + len(sharer_rides),
+    }
+    return render(request, 'myrides.html', context=context)
 
 
 def setting(request):
@@ -48,7 +61,7 @@ def setting(request):
         'last_name': last_name,
         'phone_number': phone_number,
         'email': email,
-        'are_you_a_driver':are_you_a_driver,
+        'are_you_a_driver': are_you_a_driver,
         'licence_number': licence_number,
         'special_vehicle_info':special_vehicle_info,
         'vehicle_type':vehicle_type,
@@ -59,13 +72,35 @@ def setting(request):
 
 def request_ride(request):
     if request.method == 'POST':
-        print(request.POST)
+        form = DuberRideRequestForm(request.POST)
+        if form.is_valid():
+            ride = form.save(commit=False)
+            ride.owner = request.user
+            ride.save()
+            form.save_m2m()
+            messages.add_message(request, messages.SUCCESS, "Your ride request has been created in My Rides!")
+            return redirect('myrides')
+        else:
+            mapping = {
+                'dst_addr': 'Destination Address',
+                'num_passengers_owner_party': 'Desired Number of Passengers',
+                'owner_desired_arrival_time': 'Desired Arrival Time',
+                'owner_desired_vehicle_type': 'Desired Vehicle Type',
+                'is_shareable': 'Is the ride shareable',
+            }
+            for id in form.errors:
+                if id != '__all__':
+                    messages.add_message(request, messages.ERROR,
+                                         "{}: {}\n".format(mapping[id], form.errors[id].as_text()))
+                else:
+                    messages.add_message(request, messages.ERROR, "{}\n".format(form.errors[id].as_text()))
+            return redirect('request_ride')
     else:
         form = DuberRideRequestForm()
-        context = {
-            'form': form
-        }
-        return render(request, 'riderequest.html', context=context)
+    context = {
+        'form': form
+    }
+    return render(request, 'riderequest.html', context=context)
 
 
 def edit_account(request):
@@ -84,7 +119,7 @@ def edit_account(request):
             'phone_number': phone_number,
             'email': email,
         }
-        return render(request, 'edit_account.html',context=context)
+        return render(request, 'edit_account.html', context=context)
     else:
         new_first_name = request.POST['first_name']
         new_last_name = request.POST['last_name']
@@ -98,6 +133,7 @@ def edit_account(request):
         user_model.objects.filter(username=request.user.username).update(email=new_email)
 
         return redirect('setting')
+
 
 def edit_driver(request):
     if request.method == 'GET':
@@ -157,3 +193,24 @@ def edit_driver(request):
         DuberDriver.objects.filter(duber_user=request.user.username).update(special_info=new_special_vehicle_info)
 
         return redirect('setting')
+
+
+def ride_detail(request, pk):
+    ride = Ride.objects.filter(ride_id=pk).first()
+    owner = get_user_model().objects.filter(username=ride.owner).first()
+    if ride.driver is not None:
+        driver = DuberDriver.objects.filter(duber_user=ride.driver).first()
+    else:
+        driver = None
+    if ride.sharer is not None:
+        sharer = get_user_model().objects.filter(username=ride.sharer).all()
+    else:
+        sharer = None
+    context = {
+        'ride': ride,
+        'owner': owner,
+        'status': ride.status,
+        'driver': driver,
+        'sharer': sharer,
+    }
+    return render(request, 'myride_detail.html', context=context)

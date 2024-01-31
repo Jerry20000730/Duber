@@ -110,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "America/New_York"
 
 USE_I18N = True
 
@@ -141,8 +141,7 @@ from django.db import models
 class RideStatus(models.IntegerChoices):
     OPEN = 1
     CONFIRM = 2
-    PICKED = 3
-    COMPLETE = 4
+    COMPLETE = 3
 
 
 class VehicleType(models.IntegerChoices):
