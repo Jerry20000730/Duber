@@ -3,12 +3,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.utils import timezone
+
 from Account.models import DuberDriver
 from Ride.forms import DuberRideRequestForm
 from Ride.models import Ride
 
 
 # Create your views here.
+@login_required
 def myrides(request):
     owner_rides = Ride.objects.filter(owner=request.user)
     if request.user.is_driver:
@@ -26,6 +29,7 @@ def myrides(request):
         'sharer_rides_number': len(sharer_rides),
         'my_ride_number': len(owner_rides) + len(driver_rides) + len(sharer_rides),
     }
+
     return render(request, 'myrides.html', context=context)
 
 
@@ -171,10 +175,8 @@ def edit_driver(request):
 
         if (new_identity == "121"):
             new_identity = True
-            print("here1")
         else:
             new_identity = False
-            print("here2")
 
         if (new_identity == True):
             new_vehicle_type = request.POST['vehicle_type']
@@ -213,8 +215,10 @@ def ride_detail(request, pk):
     owner = get_user_model().objects.filter(username=ride.owner).first()
     if ride.driver is not None:
         driver = DuberDriver.objects.filter(duber_user=ride.driver).first()
+        driver_user = DuberDriver.objects.filter(duber_user=driver.duber_user).first()
     else:
         driver = None
+        driver_user = None
     if ride.sharer is not None:
         sharer = get_user_model().objects.filter(username=ride.sharer).all()
     else:
@@ -224,6 +228,57 @@ def ride_detail(request, pk):
         'owner': owner,
         'status': ride.status,
         'driver': driver,
+        'driver_user': driver_user,
         'sharer': sharer,
     }
+    print("here")
+    print(ride.owner_desired_arrival_time)
     return render(request, 'myride_detail.html', context=context)
+
+def edit_detail(request, pk):
+    if request.method == 'GET':
+        ride = Ride.objects.filter(ride_id=pk).first()
+        owner = get_user_model().objects.filter(username=ride.owner).first()
+        if ride.driver is not None:
+            driver = DuberDriver.objects.filter(duber_user=ride.driver).first()
+            driver_user = DuberDriver.objects.filter(duber_user=driver.duber_user).first()
+        else:
+            driver = None
+            driver_user = None
+        if ride.sharer is not None:
+            sharer = get_user_model().objects.filter(username=ride.sharer).all()
+        else:
+            sharer = None
+        context = {
+            'ride': ride,
+            'owner': owner,
+            'status': ride.status,
+            'driver': driver,
+            'driver_user': driver_user,
+            'sharer': sharer,
+        }
+        return render(request, 'edit_detail.html', context=context)
+    else:
+        new_ride_destination = request.POST.get('ride_destination')
+        new_desired_arrival_time_owner = request.POST.get('desired_arrival_time_owner')
+
+        new_passenger_number_owner=request.POST.get('passenger_number_owner')
+        new_shareable = request.POST.get('shareable')
+        if (new_shareable == "1"):
+            new_shareable = True
+        else:
+            new_shareable = False
+        new_desired_vehicle_type = request.POST.get('desired_vehicle_type')
+        new_special_request = request.POST.get('special_request')
+
+        ride = Ride.objects.filter(ride_id=pk)
+        ride.update(dst_addr=new_ride_destination)
+        ride.update(owner_desired_arrival_time=new_desired_arrival_time_owner)
+        ride.update(num_passengers_owner_party=new_passenger_number_owner)
+        ride.update(is_shareable=new_shareable)
+        ride.update(owner_desired_vehicle_type=new_desired_vehicle_type)
+        ride.update(special_requests=new_special_request)
+        ride.update(time_uptate = timezone.now())
+
+
+        return redirect('ride_detail',pk=pk)

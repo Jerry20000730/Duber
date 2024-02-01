@@ -15,6 +15,23 @@
 </head>
 
 <body>
+    <div class="modal fade" tabindex="-1" id = "log-out-button">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Log Out</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure to Log Out?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <a type="button" class="btn btn-primary" role="button" href="{% url 'logout' %}">Continue</a>
+          </div>
+        </div>
+      </div>
+    </div>
     <nav class="navbar navbar-expand sticky-top py-3" style="height: 120px;width: auto;padding: 16px 0px;text-align: center;position: relative;overflow: visible;transform: translate(0px);">
         <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"><img class="border rounded" src="{% static 'img/duber.png' %}" width="50"></span><span>&nbsp;&nbsp;<strong style="color: #012169;">Duber</strong></span></a>
             <div class="collapse navbar-collapse" id="navcol-1">
@@ -29,8 +46,8 @@
                             <div class="col px-1">
                                 <p class="lh-sm fw-light" style="margin-bottom: 0px;font-weight: bold;padding: 2px;padding-bottom: 0px;">Welcome {{ user.first_name }}<br><br></p>
                             </div>
-                            <div class="col px-1"><a class="btn btn-primary" role="button" style="font-weight: bold;border-style: solid;">Settings</a></div>
-                            <div class="col align-middle"><a class="btn btn-primary text-bg-light px-1" role="button">Logout</a></div>
+                            <div class="col px-1"><a class="btn btn-primary" role="button" style="font-weight: bold;border-style: solid;" href="{% url 'setting' %}">Settings</a></div>
+                            <div class="col align-middle"><a class="btn btn-primary text-bg-light px-1" role="button" data-bs-toggle="modal" data-bs-target="#log-out-button">Logout</a></div>
                         </div>
                     </div>
                 </div>
@@ -129,7 +146,14 @@
                                     <div class="col">
                                         <div class="row">
                                             <div class="col col-sm-2 p-2" style="border-width: 2px;border-top-style: solid;border-bottom-style: solid;border-color: rgba(1,33,105,0.5);border-left-style: solid;"><strong class="col-sm-2" style="color: var(--bs-primary);">Shareable?</strong></div>
-                                            <div class="col col-sm-10 p-2" style="border-width: 2px;border-style: solid;border-color: rgba(1,33,105,0.5);"><span style="color: var(--bs-primary);">{{ ride.is_shareable }}</span></div>
+                                            <div class="col col-sm-10 p-2" style="border-width: 2px;border-style: solid;border-color: rgba(1,33,105,0.5);">
+                                                <span style="color: var(--bs-primary);">
+                                                {% if ride.is_shareable == True %}
+                                                    Yes
+                                                {% elif ride.is_shareable == False %}
+                                                    No
+                                                {% endif %}
+                                                </span></div>
                                         </div>
                                     </div>
                                 </div>
@@ -148,7 +172,15 @@
                         <div class="row mt-4 m-auto" id="desired_vehicle_type" style="width: 98%">
                             <div class="col col-sm-2 p-2" style="border-width: 2px;border-top-style: solid;border-bottom-style: solid;border-color: rgba(1,33,105,0.5);border-left-style: solid;"><strong class="col-sm-2" style="color: var(--bs-primary);">Desired Vehicle Type</strong></div>
                             <div class="col col-sm-10 p-2" style="border-width: 2px;border-style: solid;border-color: rgba(1,33,105,0.5);">
-                                <span style="color: var(--bs-primary);">{{ ride.owner_desired_arrival_time }}</span></div>
+                                <span style="color: var(--bs-primary);">
+                                    {% if ride.owner_desired_vehicle_type == 1 %}
+                                        DuberX
+                                    {% elif ride.owner_desired_vehicle_type == 2 %}
+                                        DuberXL
+                                    {% else %}
+                                        Duber Luxury
+                                    {% endif %}
+                                </span></div>
                         </div>
                         <div class="row mt-2 m-auto mb-2" id="Special-Request" style="width: 98%">
                             <div class="col col-sm-2 p-2" style="border-width: 2px;border-top-style: solid;border-bottom-style: solid;border-color: rgba(1,33,105,0.5);border-left-style: solid;"><strong class="col-sm-2" style="color: var(--bs-primary);">Special Request</strong></div>
@@ -163,7 +195,7 @@
                     </div>
                     <div id="button-ride-func" class="w-50 m-5">
                         <div class="row">
-                            <div class="col col-sm-6"><button class="btn btn-primary w-100" type="button">Function</button></div>
+                            <div class="col col-sm-6"><a class="btn btn-primary w-100" type="button" href="{% url 'edit_detail' ride.ride_id %}">Edit The Ride</a></div>
                             <div class="col col-sm-6"><a class="btn btn-primary w-100" type="button" href="{% url 'myrides' %}">Back</a></div>
                         </div>
                     </div>
