@@ -1,4 +1,5 @@
 from django.contrib import messages, auth
+from django.contrib.auth import logout
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.safestring import mark_safe
@@ -55,9 +56,6 @@ def register(request):
     }
     return render(request, 'signup.html', context=context)
 
-def logout(request):
+def duber_logout(request):
     logout(request)
-    response = redirect(redirect('login'))
-    response.delete_cookie('username')
-    response.delete_cookie('password')
-    return response
+    return redirect('homepage')
