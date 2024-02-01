@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.utils import timezone
@@ -34,7 +34,7 @@ def myrides(request):
 
 
 def setting(request):
-    #Account Info
+    # Account Info
     username = request.user.username
     password = request.user.password
     first_name = request.user.first_name
@@ -42,7 +42,7 @@ def setting(request):
     phone_number = request.user.phone_number
     email = request.user.email
 
-    #Driver Info
+    # Driver Info
     user_driver = DuberDriver.objects.filter(duber_user=username)
     are_you_a_driver = request.user.is_driver
 
@@ -54,7 +54,6 @@ def setting(request):
 
     special_vehicle_info = user_driver.values('special_info').first()
     special_vehicle_info = special_vehicle_info['special_info'] if special_vehicle_info else None
-
 
     vehicle_type = user_driver.values('vehicle_type').first()
 
@@ -69,9 +68,9 @@ def setting(request):
         'email': email,
         'are_you_a_driver': are_you_a_driver,
         'licence_number': licence_number,
-        'special_vehicle_info':special_vehicle_info,
-        'vehicle_type':vehicle_type,
-        'maximum_passenger_number':maximum_passenger_number,
+        'special_vehicle_info': special_vehicle_info,
+        'vehicle_type': vehicle_type,
+        'maximum_passenger_number': maximum_passenger_number,
     }
     return render(request, 'setting.html', context=context)
 
@@ -168,10 +167,9 @@ def edit_driver(request):
             'vehicle_type': vehicle_type,
             'maximum_passenger_number': maximum_passenger_number,
         }
-        return render(request,'edit_driver.html',context=context)
+        return render(request, 'edit_driver.html', context=context)
     else:
         new_identity = request.POST['are_you_a_driver']
-
 
         if (new_identity == "121"):
             new_identity = True
@@ -186,6 +184,7 @@ def edit_driver(request):
 
         user_model = get_user_model()
         user_model.objects.filter(username=request.user.username).update(is_driver=new_identity)
+
         current_username = request.user.username
         duber_user = user_model.objects.filter(username=current_username).first()
         if (new_identity==True):
@@ -206,6 +205,7 @@ def edit_driver(request):
                 new_driver.save()
         else:
             DuberDriver.objects.filter(duber_user=request.user.username).delete()
+
 
         return redirect('setting')
 
@@ -282,3 +282,14 @@ def edit_detail(request, pk):
 
 
         return redirect('ride_detail',pk=pk)
+
+def search_ride(request):
+    return render(request, 'search_ride_entry.html')
+
+
+def search_ride_driver(request):
+    return HttpResponse("search_ride_driver")
+
+
+def search_ride_sharer(request):
+    return render(request, 'search_ride_sharer.html')
