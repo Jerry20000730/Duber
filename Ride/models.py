@@ -30,7 +30,7 @@ class Ride(models.Model):
 
     status = models.IntegerField(choices=RideStatus, default=RideStatus.OPEN)
     time_created = models.DateTimeField(auto_now_add=True)
-    time_updated = models.DateTimeField(auto_now=True)
+    time_uptate = models.DateTimeField(auto_now=True)
     time_complete = models.DateTimeField(blank=True, null=True)
 
     class Meta:
