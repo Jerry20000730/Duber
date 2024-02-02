@@ -1,11 +1,13 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.utils import timezone
 
 from Account.models import DuberDriver
+from Duber.settings import RideStatus
 from Ride.forms import DuberRideRequestForm
 from Ride.models import Ride
 
@@ -231,8 +233,7 @@ def ride_detail(request, pk):
         'driver_user': driver_user,
         'sharer': sharer,
     }
-    print("here")
-    print(ride.owner_desired_arrival_time)
+
     return render(request, 'myride_detail.html', context=context)
 
 def edit_detail(request, pk):
@@ -292,4 +293,19 @@ def search_ride_driver(request):
 
 
 def search_ride_sharer(request):
+    if request.method == 'POST':
+        new_dst_addr = request.POST.get('dst_addr')
+        arrival_window_first = request.POST.get('arrival_window_first')
+        arrival_window_second = request.POST.get('arrival_window_second')
+        required_num_passenger_owner_party = request.POST.get('num_passenger_owner_party')
+
+        rides = Ride.objects.filter(
+            Q(dst_addr=new_dst_addr) &
+            Q(owner_desired_arrival_time__gte=arrival_window_first) &
+            Q(owner_desired_arrival_time__lte=arrival_window_second) &
+            Q(is_shareable=True) &
+            Q(status=RideStatus.OPEN) &
+            ~Q(driver_id__isnull=True)
+        )
+
     return render(request, 'search_ride_sharer.html')
