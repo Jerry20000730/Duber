@@ -15,24 +15,58 @@ from Ride.models import Ride
 # Create your views here.
 @login_required(login_url='/account/login')
 def myrides(request):
-    owner_rides = Ride.objects.filter(owner=request.user)
-    if request.user.is_driver:
-        driver = DuberDriver.objects.filter(duber_user=request.user).first()
-        driver_rides = Ride.objects.filter(driver=driver)
-    else:
-        driver_rides = []
-    sharer_rides = Ride.objects.filter(sharer=request.user)
-    context = {
-        'owner_rides': owner_rides,
-        'driver_rides': driver_rides,
-        'sharer_rides': sharer_rides,
-        'owner_rides_number': len(owner_rides),
-        'driver_rides_number': len(driver_rides),
-        'sharer_rides_number': len(sharer_rides),
-        'my_ride_number': len(owner_rides) + len(driver_rides) + len(sharer_rides),
-    }
+    if request.method == "GET":
+        owner_rides = Ride.objects.filter(owner=request.user)
+        if request.user.is_driver:
+            driver = DuberDriver.objects.filter(duber_user=request.user).first()
+            driver_rides = Ride.objects.filter(driver=driver)
+        else:
+            driver_rides = []
+        sharer_rides = Ride.objects.filter(sharer=request.user)
+        context = {
+            'owner_rides': owner_rides,
+            'driver_rides': driver_rides,
+            'sharer_rides': sharer_rides,
+            'owner_rides_number': len(owner_rides),
+            'driver_rides_number': len(driver_rides),
+            'sharer_rides_number': len(sharer_rides),
+            'my_ride_number': len(owner_rides) + len(driver_rides) + len(sharer_rides),
+        }
+        return render(request, 'myrides.html', context=context)
 
-    return render(request, 'myrides.html', context=context)
+def join_ride(request,pk):
+    if request.method == "GET":
+        ride=Ride.objects.get(ride_id=pk)
+        sharer_user = get_user_model().objects.get(username=request.user.username)
+        ride.sharer.add(sharer_user)
+        messages.add_message(request, messages.SUCCESS, 'You have successfully joined a ride')
+        return redirect('myrides')
+
+
+
+def sharer_search_result(request):
+    if request.method == 'POST':
+        new_dst_addr = request.POST.get('dst_addr')
+        arrival_window_first = request.POST.get('arrival_window_first')
+        arrival_window_second = request.POST.get('arrival_window_second')
+        required_num_passenger_owner_party = request.POST.get('num_passenger_owner_party')
+
+        rides = Ride.objects.filter(
+            Q(dst_addr=new_dst_addr) &
+            Q(owner_desired_arrival_time__gte=arrival_window_first) &
+            Q(owner_desired_arrival_time__lte=arrival_window_second) &
+            Q(status=RideStatus.OPEN) &
+            ~Q(driver_id__isnull=True) &
+            Q(is_shareable=True) &
+            Q(num_passengers_owner_party__lte=F('driver__maximum_passenger_number') - required_num_passenger_owner_party)
+        )
+
+        return render(request, 'sharer_search_result.html',context={'rides': rides})
+    else:
+        return redirect('sharer_search_result')
+
+def search_ride_sharer(request):
+    return render(request, 'search_ride_sharer.html')
 
 
 @login_required(login_url='/account/login')
@@ -237,8 +271,7 @@ def ride_detail(request, pk):
         'driver_user': driver_user,
         'sharer': sharer,
     }
-    print("here")
-    print(ride.owner_desired_arrival_time)
+
     return render(request, 'myride_detail.html', context=context)
 
 
@@ -322,7 +355,6 @@ def search_ride_driver(request):
         'rides': rides,
         'res_ride_number': len(rides),
     }
-
     return render(request, 'search_ride_driver.html', context=context)
 
 

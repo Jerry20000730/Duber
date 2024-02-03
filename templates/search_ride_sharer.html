@@ -17,6 +17,23 @@
 </head>
 
 <body class="d-flex flex-column h-100 min-vh-100">
+    <div class="modal fade" tabindex="-1" id = "log-out-button">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Log Out</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure to Log Out?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <a type="button" class="btn btn-primary" role="button" href="{% url 'logout' %}">Continue</a>
+          </div>
+        </div>
+      </div>
+    </div>
     <nav class="navbar navbar-expand sticky-top py-3" style="height: 120px;width: auto;padding: 16px 0px;text-align: center;position: relative;overflow: visible;transform: translate(0px);">
         <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"><img class="border rounded" src="{% static 'img/duber.png' %}" width="50"></span><span>&nbsp;&nbsp;<strong style="color: #012169;">Duber</strong></span></a>
             <div class="collapse navbar-collapse" id="navcol-1">
@@ -31,8 +48,8 @@
                             <div class="col px-1">
                                 <p class="lh-sm fw-light" style="margin-bottom: 0px;font-weight: bold;padding: 2px;padding-bottom: 0px;">Welcome {{ user.first_name }}<br><br></p>
                             </div>
-                            <div class="col px-1"><a class="btn btn-primary" role="button" style="font-weight: bold;border-style: solid;">Settings</a></div>
-                            <div class="col align-middle"><a class="btn btn-primary text-bg-light px-1" role="button">Logout</a></div>
+                            <div class="col px-1"><a class="btn btn-primary" role="button" style="font-weight: bold;border-style: solid;" href="{% url 'setting' %}">Settings</a></div>
+                            <div class="col align-middle"><a class="btn btn-primary text-bg-light px-1" role="button" data-bs-toggle="modal" data-bs-target="#log-out-button">Logout</a></div>
                         </div>
                     </div>
                 </div>
@@ -43,27 +60,28 @@
         <div class="card w-75 m-auto">
             <div class="card-body">
                 <h4 class="card-title" style="text-align: center;">Search Duber Ride</h4>
-                <form>
+                <form id="search_ride_sharer_form" method="POST" action="{% url 'sharer_search_result' %}">
+                    {% csrf_token %}
                     <div class="row mb-3">
                         <div class="col col-sm-2"><label class="col-form-label" style="color: var(--bs-primary);font-weight: bold;">Destination Addr.</label></div>
-                        <div class="col"><input class="form-control col-sm-10" type="text" placeholder="1234 Main St."></div>
+                        <div class="col"><input class="form-control col-sm-10" type="text" name="dst_addr" placeholder="1234 Main St."></div>
                     </div>
                     <div class="row mb-3">
                         <div class="col col-sm-2"><label class="col-form-label" style="color: var(--bs-primary);font-weight: bold;">Arrival Window</label></div>
-                        <div class="col col-sm-4"><input class="form-control" type="datetime-local"></div>
+                        <div class="col col-sm-4"><input class="form-control" type="datetime-local" name="arrival_window_first"></div>
                         <div class="col col-sm-1"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-arrow-right-short w-100" style="font-size: 34px;">
                                 <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8"></path>
                             </svg></div>
-                        <div class="col col-sm-4"><input class="form-control" type="datetime-local"></div>
+                        <div class="col col-sm-4"><input class="form-control" type="datetime-local" name="arrival_window_second"></div>
                     </div>
                     <div class="row mb-3">
                         <div class="col col-sm-2"><label class="col-form-label" style="color: var(--bs-primary);font-weight: bold;">Num. of Passengers</label></div>
-                        <div class="col"><input class="form-control" type="number" min="1"><span style="color: var(--bs-primary);font-style: italic;font-size: 13px;">The number of passenger must be larger than zero</span></div>
+                        <div class="col"><input class="form-control" type="number" name="num_passenger_owner_party" min="1"><span style="color: var(--bs-primary);font-style: italic;font-size: 13px;">The number of passenger must be larger than zero</span></div>
                     </div>
                     <div class="row mb-3">
-                        <div class="col" style="text-align: center;"><button class="btn btn-primary" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-search">
+                        <div class="col" style="text-align: center;"><a class="btn btn-primary" type="submit" onclick="redirectToSetting1()"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-search" >
                                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
-                                </svg>&nbsp; Search</button></div>
+                                </svg>&nbsp; Search</a></div>
                     </div>
                 </form>
             </div>
@@ -84,6 +102,40 @@
     <script src="{% static 'js/jquery-2.0.0.min.js' %}"></script>
     <script src="{% static 'js/bs-init.js' %}"></script>
     <script src="{% static 'js/util.js' %}"></script>
+    <script>
+        function redirectToSetting1() {
+            function isPositiveInteger(value) {
+                return Number.isInteger(value)  && value > 0 && value<= 7 ;
+            }
+            var new_dst_addr = document.forms["search_ride_sharer_form"]["dst_addr"].value;
+            var new_first = document.forms["search_ride_sharer_form"]["arrival_window_first"].value;
+            var new_second = document.forms["search_ride_sharer_form"]["arrival_window_second"].value;
+            var new_number = document.forms["search_ride_sharer_form"]["num_passenger_owner_party"].value;
+            var isError = false;
+            var message = "";
+            if (new_dst_addr == null || new_dst_addr == "") {
+                message += "Destination Address is blank, please fill in all required fields\n";
+                isError = true;
+            }
+            if (new_first == null || new_first == "") {
+                message += "Arrival Window is blank, please fill in all required fields\n";
+                isError = true;
+            }
+            if (new_second == null || new_second == "") {
+                message += "Arrival Window is blank, please fill in all required fields\n";
+                isError = true;
+            }
+            if (isPositiveInteger(parseInt(new_number)) === false){
+                message += "Passenger Number should be equal or less than 7, please fill in all required fields\n";
+                isError = true;
+            }
+            if (isError) {
+                alert(message);
+            }else{
+                document.getElementById("search_ride_sharer_form").submit();
+            }
+        }
+    </script>
 </body>
 
 </html>
