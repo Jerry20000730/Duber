@@ -7,7 +7,7 @@ from django.utils import timezone
 
 from Account.models import DuberDriver
 from Duber.settings import RideStatus
-from Ride.forms import DuberRideRequestForm
+from Ride.forms import DuberRideRequestForm, RoleBasedFilteringForm
 from Ride.models import Ride
 
 
@@ -15,6 +15,7 @@ from Ride.models import Ride
 @login_required(login_url='/account/login')
 def myrides(request):
     if request.method == "GET":
+        form = RoleBasedFilteringForm()
         owner_rides = Ride.objects.filter(owner=request.user)
         if request.user.is_driver:
             driver = DuberDriver.objects.filter(duber_user=request.user).first()
@@ -23,6 +24,7 @@ def myrides(request):
             driver_rides = []
         sharer_rides = Ride.objects.filter(sharer=request.user).all()
         context = {
+            'form': form,
             'owner_rides': owner_rides,
             'driver_rides': driver_rides,
             'sharer_rides': sharer_rides,

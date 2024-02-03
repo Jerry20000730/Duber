@@ -72,7 +72,7 @@
                         {% endfor %}
                     {% endif %}
                     <div class="w-100 m-auto" style="padding-right: 20px;padding-left: 20px;">
-                        <form id="new_ride_request_form" method="POST" action="{% url 'request_ride' %}" onsubmit="return validateRideRequest()" novalidate>
+                        <form id="new_ride_request_form" name="RideRequestForm" method="POST" action="{% url 'request_ride' %}" onsubmit="return validateRideRequest()" novalidate>
                             {% csrf_token %}
                             <div class="row mb-3">
                                 <div class="col col-sm-2"><label class="col-form-label" style="color: var(--bs-primary);font-weight: bold;">Destination Addr.</label></div>

@@ -28,10 +28,19 @@ class DuberRideRequestForm(forms.ModelForm):
                 self.fields[field].widget.attrs['placeholder'] = 'Any special requests?'
             elif field == 'num_passengers_owner_party':
                 self.fields[field].widget.attrs['min'] = '1'
-                self.fields[field].widget.attrs['placeholder'] = '1'
+                self.fields[field].widget.attrs['placeholder'] = 'Number of passengers in your party'
 
     def clean(self):
         if self.cleaned_data['num_passengers_owner_party'] < 1:
             raise forms.ValidationError("Number of passengers cannot be less than 1!")
         if self.cleaned_data['owner_desired_arrival_time'] < timezone.now():
             raise forms.ValidationError("Desired arrival time cannot be in the past!")
+
+
+class RoleBasedFilteringForm(forms.Form):
+    role = forms.ChoiceField(label="Filter by role",
+                             choices=[('owner', 'Owner'), ('driver', 'Driver'), ('sharer', 'Sharer')],
+                             widget=forms.CheckboxSelectMultiple)
+
+    def __init__(self, *args, **kwargs):
+        super(RoleBasedFilteringForm, self).__init__(*args, **kwargs)
