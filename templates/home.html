@@ -12,19 +12,25 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
 </head>
 
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column h-100 min-vh-100">
     <nav class="navbar navbar-expand sticky-top py-3" style="height: 120px;width: auto;padding: 16px 0px;text-align: center;position: relative;overflow: visible;transform: translate(0px);">
-        <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"><img class="border rounded" src="{% static 'img/duber.png' %}" width="50"></span><span>&nbsp;&nbsp;<strong style="color: #012169;">Duber</strong></span></a>
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="{% url 'homepage' %}"><span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"><img class="border rounded" src="{% static 'img/duber.png' %}" width="50"></span><span>&nbsp;&nbsp;<strong style="color: #012169;">Duber</strong></span></a>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#">Driver</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'driver_about' %}">Driver</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Ride Owner</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Ride Sharer</a></li>
                 </ul>
+                {% if not user.is_authenticated %}
                 <div class="row">
                     <div class="col"><a class="btn btn-primary" role="button" href="{% url 'login' %}" style="font-weight: bold;border-style: solid;/*border-color: var(--bs-emphasis-color);*//*background: rgba(1,33,105,0.63);*/">Login</a></div>
                     <div class="col"><a class="btn btn-primary text-bg-light" role="button" href="{% url 'register' %}" style="font-weight: bold;border-style: solid;/*border-color: var(--bs-emphasis-color);*//*background: rgba(1,33,105,0.63);*/width: 94px;">Sign Up</a></div>
                 </div>
+                {% else %}
+                <div class="row">
+                    <div class="col"><a class="btn btn-primary" role="button" href="{% url 'myrides' %}" style="font-weight: bold;border-style: solid;/*border-color: var(--bs-emphasis-color);*//*background: rgba(1,33,105,0.63);*/">My Rides</a></div>
+                </div>
+                {% endif %}
             </div>
         </div>
     </nav>
@@ -57,7 +63,7 @@
                         </svg></div>
                     <div>
                         <h4 style="font-weight: bold;">Driver</h4>
-                        <p>If you have a car, you can register as a driver. Drivers can search for open ride requests, claim and start a ride service.&nbsp;</p><a href="#">Learn More&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-arrow-right">
+                        <p>If you have a car, you can register as a driver. Drivers can search for open ride requests, claim and start a ride service.&nbsp;</p><a href="{% url 'driver_about' %}">Learn More&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-arrow-right">
                                 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"></path>
                             </svg></a>
                     </div>
@@ -91,9 +97,9 @@
     </div>
     <div class="container py-4 py-xl-5" data-aos="fade-up" style="width: auto;">
         <div class="row mb-5">
-            <div class="col-md-8 col-xl-6 text-center mx-auto">
+            <div class="text-center mx-auto">
                 <h2>Our Team</h2>
-                <p class="w-lg-50">Duber is created by two jobless students</p>
+                <p>Duber is created by two <b>jobless</b> students</p>
             </div>
         </div>
         <div class="row">
@@ -122,9 +128,9 @@
     <footer class="text-center bg-primary" style="height: 218.983px;">
         <div class="container text-white py-4 py-lg-5">
             <ul class="list-inline">
-                <li class="list-inline-item me-4"><a class="link-light" href="#">Home</a></li>
+                <li class="list-inline-item me-4"><a class="link-light" href="{% url 'homepage' %}">Home</a></li>
                 <li class="list-inline-item me-4"><a class="link-light" href="#">About</a></li>
-                <li class="list-inline-item"><a class="link-light" href="#">Contact</a></li>
+                <li class="list-inline-item"><a class="link-light" href="{% url 'contact' %}">Contact</a></li>
             </ul>
             <p style="color: var(--bs-white);">Created by Fangcheng (fg96) and Kenan (kd305)</p>
             <p style="color: var(--bs-white);">Copyright © 2024 Duber</p>

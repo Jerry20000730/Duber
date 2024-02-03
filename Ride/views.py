@@ -1,17 +1,19 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.db.models import F, Count, Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.utils import timezone
 
 from Account.models import DuberDriver
+from Duber.settings import RideStatus
 from Ride.forms import DuberRideRequestForm
 from Ride.models import Ride
 
 
 # Create your views here.
-@login_required
+@login_required(login_url='/account/login')
 def myrides(request):
     owner_rides = Ride.objects.filter(owner=request.user)
     if request.user.is_driver:
@@ -33,6 +35,7 @@ def myrides(request):
     return render(request, 'myrides.html', context=context)
 
 
+@login_required(login_url='/account/login')
 def setting(request):
     # Account Info
     username = request.user.username
@@ -75,6 +78,7 @@ def setting(request):
     return render(request, 'setting.html', context=context)
 
 
+@login_required(login_url='/account/login')
 def request_ride(request):
     if request.method == 'POST':
         form = DuberRideRequestForm(request.POST)
@@ -108,6 +112,7 @@ def request_ride(request):
     return render(request, 'riderequest.html', context=context)
 
 
+@login_required(login_url='/account/login')
 def edit_account(request):
     if request.method == 'GET':
         username = request.user.username
@@ -140,6 +145,7 @@ def edit_account(request):
         return redirect('setting')
 
 
+@login_required(login_url='/account/login')
 def edit_driver(request):
     if request.method == 'GET':
         # Driver Info
@@ -187,14 +193,14 @@ def edit_driver(request):
 
         current_username = request.user.username
         duber_user = user_model.objects.filter(username=current_username).first()
-        if (new_identity==True):
+        if (new_identity == True):
             exists = DuberDriver.objects.filter(duber_user=duber_user).exists()
             if (exists):
                 new_driver = DuberDriver.objects.filter(duber_user=duber_user)
                 new_driver.update(vehicle_type=new_vehicle_type)
-                new_driver.update(licence_plate_number = new_licence_number)
-                new_driver.update(maximum_passenger_number = new_maximum_passenger_number)
-                new_driver.update(special_info = new_special_vehicle_info)
+                new_driver.update(licence_plate_number=new_licence_number)
+                new_driver.update(maximum_passenger_number=new_maximum_passenger_number)
+                new_driver.update(special_info=new_special_vehicle_info)
             else:
                 new_driver = DuberDriver.objects.create(duber_user=duber_user)
 
@@ -206,10 +212,10 @@ def edit_driver(request):
         else:
             DuberDriver.objects.filter(duber_user=request.user.username).delete()
 
-
         return redirect('setting')
 
 
+@login_required(login_url='/account/login')
 def ride_detail(request, pk):
     ride = Ride.objects.filter(ride_id=pk).first()
     owner = get_user_model().objects.filter(username=ride.owner).first()
@@ -235,6 +241,8 @@ def ride_detail(request, pk):
     print(ride.owner_desired_arrival_time)
     return render(request, 'myride_detail.html', context=context)
 
+
+@login_required(login_url='/account/login')
 def edit_detail(request, pk):
     if request.method == 'GET':
         ride = Ride.objects.filter(ride_id=pk).first()
@@ -262,7 +270,7 @@ def edit_detail(request, pk):
         new_ride_destination = request.POST.get('ride_destination')
         new_desired_arrival_time_owner = request.POST.get('desired_arrival_time_owner')
 
-        new_passenger_number_owner=request.POST.get('passenger_number_owner')
+        new_passenger_number_owner = request.POST.get('passenger_number_owner')
         new_shareable = request.POST.get('shareable')
         if (new_shareable == "1"):
             new_shareable = True
@@ -278,18 +286,62 @@ def edit_detail(request, pk):
         ride.update(is_shareable=new_shareable)
         ride.update(owner_desired_vehicle_type=new_desired_vehicle_type)
         ride.update(special_requests=new_special_request)
-        ride.update(time_uptate = timezone.now())
+        ride.update(time_uptate=timezone.now())
+
+        return redirect('ride_detail', pk=pk)
 
 
-        return redirect('ride_detail',pk=pk)
-
+@login_required(login_url='/account/login')
 def search_ride(request):
     return render(request, 'search_ride_entry.html')
 
 
+@login_required(login_url='/account/login')
 def search_ride_driver(request):
-    return HttpResponse("search_ride_driver")
+    if not request.user.is_driver:
+        messages.add_message(request, messages.ERROR,
+                             "You are not registered as a driver! Click below to register as a driver."
+                             "as a driver.")
+        return redirect('search_ride')
+
+    driver_duberuser = get_user_model().objects.get(username=request.user.username)
+    driver = DuberDriver.objects.filter(duber_user=driver_duberuser).first()
+
+    rides = Ride.objects.annotate(num_passengers_sharer_party=Count('sharer')) \
+        .annotate(sum_passengers=F('num_passengers_owner_party') + F('num_passengers_sharer_party')) \
+        .filter(status=RideStatus.OPEN,
+                driver=None,
+                sum_passengers__lte=driver.maximum_passenger_number) \
+        .filter(Q(owner_desired_vehicle_type__isnull=True) | Q(
+        owner_desired_vehicle_type__exact=driver.vehicle_type)) \
+        .filter(Q(special_requests__isnull=True) | Q(special_requests__exact='') | Q(
+        special_requests__exact=driver.special_info)) \
+        .exclude(owner=driver_duberuser)
+
+    context = {
+        'rides': rides,
+        'res_ride_number': len(rides),
+    }
+
+    return render(request, 'search_ride_driver.html', context=context)
 
 
+@login_required(login_url='/account/login')
 def search_ride_sharer(request):
     return render(request, 'search_ride_sharer.html')
+
+
+@login_required(login_url='/account/login')
+def claim_ride_driver(request, pk):
+    if not request.user.is_driver:
+        messages.add_message(request, messages.ERROR,
+                             "You are not registered as a driver! Click below to register as a driver.")
+        return redirect('search_ride')
+
+    driver_duberuser = get_user_model().objects.get(username=request.user.username)
+    driver = DuberDriver.objects.get(duber_user=driver_duberuser)
+    ride = Ride.objects.get(ride_id=pk)
+    ride.driver = driver
+    ride.save()
+    messages.add_message(request, messages.SUCCESS, "You have successfully claimed the ride!")
+    return redirect('myrides')

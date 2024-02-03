@@ -24,5 +24,8 @@ urlpatterns = [
 
     # user authentication
     path("account/", include('Account.urls')),
+    # ride management
     path("ride/", include('Ride.urls')),
+    # about pages
+    path("about/", include('About.urls')),
 ]
