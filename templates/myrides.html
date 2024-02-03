@@ -11,9 +11,9 @@
             display: none;
         }
     </style>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alfa+Slab+One&amp;display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allura&amp;display=swap">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/AlfaSlabOne.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Allura.css' %}">
     <link rel="stylesheet" href="{% static 'css/bs-theme-overrides.css' %}">
     <link rel="stylesheet" href="{% static 'css/Banner-Heading-Image-images.css' %}">
     <link rel="stylesheet" href="{% static 'css/Navbar-Centered-Links-icons.css' %}">
@@ -60,13 +60,13 @@
       </div>
     </div>
     {% if messages %}
-    <div class="position-relative py-4 py-xl-5">
+    <div class="position-relative py-4 py-xl-5" id="message_container">
         {% for message in messages %}
             {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
             <div id="message" class="container">
                 <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible fade show" id="successfulRequestRideAlert"{% endif %} role="alert">
                 <button type="button" class="btn-close" data-dismiss="alert" data-bs-dismiss="alert" aria-label="Close"></button>
-                <h4>Ride request Success: </h4>
+                <h4>Success: </h4>
                 {{ message }}
                 </div>
             </div>
@@ -80,29 +80,31 @@
             <hr style="transform: scale(1);">
         </div>
         <div id="filter">
-            <form>
+            <form name="role-based-filtering-form" method="post" action="{% url 'myrides' %}">
+                {% csrf_token %}
                 <div class="row p-2">
                     <div class="col">
-                        <div class="form-group">
+                        <div class="form-group" id="role">
+                            <label for="rideRoleFilter">Filter by Role:  </label>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="inlineRideRoleCheckbox1" value="1">
+                                <input name='isOwner' class="form-check-input" type="checkbox" id="inlineRideRoleCheckbox1" value="1" checked>
                                 <label class="form-check-label" for="inlineRideRoleCheckbox1">Owner</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="2">
+                                <input name='isSharer' class="form-check-input" type="checkbox" id="inlineRideRoleCheckbox2" value="1" checked>
                                 <label class="form-check-label" for="inlineCheckbox2">Sharer</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="3">
+                                <input name='isDriver' class="form-check-input" type="checkbox" id="inlineRideRoleCheckbox3" value="1" checked>
                                 <label class="form-check-label" for="inlineCheckbox3">Driver</label>
                             </div>
-                            <a class="btn btn-primary">Filter</a>
+                            <button class="btn btn-primary" type="submit">Filter</button>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
-        <div id="spinnerbox">
+        <div id="spinnerbox" class="">
             <div class="row" style="">
                 <div class="col" style="text-align: center">
                     <div class="spinner-border text-primary" role="status">
@@ -266,7 +268,7 @@
             <p style="color: var(--bs-white);">Copyright © 2024 Duber</p>
         </div>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/jquery-2.0.0.min.js' %}"></script>
     <script>
         const spinnerbox = document.getElementById('spinnerbox');
@@ -293,7 +295,17 @@
     <script>
         setTimeout(function() {
             $("#successfulRequestRideAlert").alert('close')
-        }, 1000);
+        }, 5000);
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Function to remove the parent container when the alert is closed
+            $('#successfulRequestRideAlert').on('closed.bs.alert', function () {
+                console.log('remove');
+                $("#message_container").remove();
+                $("#message").remove();
+            });
+        });
     </script>
 </body>
 

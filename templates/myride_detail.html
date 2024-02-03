@@ -5,10 +5,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>DuberLogin</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alfa+Slab+One&amp;display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allura&amp;display=swap">
+    <title>Ride Detail</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/AlfaSlabOne.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Allura.css' %}">
     <link rel="stylesheet" href="{% static 'css/bs-theme-overrides.css' %}">
     <link rel="stylesheet" href="{% static 'css/Banner-Heading-Image-images.css' %}">
     <link rel="stylesheet" href="{% static 'css/Navbar-Centered-Links-icons.css' %}">
@@ -162,7 +162,7 @@
                         <div class="row mt-2 m-auto" id="ride_sharer" style="width: 98%;">
                             <div class="col col-sm-2 p-2" style="border-width: 2px;border-top-style: solid;border-bottom-style: solid;border-color: rgba(1,33,105,0.5);border-left-style: solid;"><strong class="col-sm-2" style="color: var(--bs-primary);">Ride Sharer</strong></div>
                             <div class="col col-sm-10 p-2" style="border-width: 2px;border-style: solid;border-color: rgba(1,33,105,0.5);">
-                                {% if sharer is None %}
+                                {% if sharer|length == 0 %}
                                     <p style="color: var(--bs-primary);">None</p>
                                 {% else %}
                                     <p style="color: var(--bs-primary);">{{ sharer.username }}</p>
@@ -177,8 +177,10 @@
                                         DuberX
                                     {% elif ride.owner_desired_vehicle_type == 2 %}
                                         DuberXL
-                                    {% else %}
+                                    {% elif ride.owner_desired_vehicle_type == 3%}
                                         Duber Luxury
+                                    {% else %}
+                                        None
                                     {% endif %}
                                 </span></div>
                         </div>
@@ -214,7 +216,7 @@
             <p style="color: var(--bs-white);">Copyright © 2024 Duber</p>
         </div>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/bs-init.js' %}"></script>
     <script src="{% static 'js/jquery-2.0.0.min.js' %}"></script>
 </body>

@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.db.models import F, Count, Q
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.utils import timezone
@@ -33,6 +32,31 @@ def myrides(request):
             'my_ride_number': len(owner_rides) + len(driver_rides) + len(sharer_rides),
         }
         return render(request, 'myrides.html', context=context)
+    else:
+        isOwner = request.POST.get('isOwner')
+        isDriver = request.POST.get('isDriver')
+        isSharer = request.POST.get('isSharer')
+        owner_rides = []
+        driver_rides = []
+        sharer_rides = []
+        if isOwner == "1":
+            owner_rides = Ride.objects.filter(owner=request.user)
+        if isDriver == "1":
+            if request.user.is_driver:
+                driver = DuberDriver.objects.filter(duber_user=request.user).first()
+                driver_rides = Ride.objects.filter(driver=driver)
+        if isSharer == "1":
+            sharer_rides = Ride.objects.filter(sharer=request.user)
+        context = {
+            'owner_rides': owner_rides,
+            'driver_rides': driver_rides,
+            'sharer_rides': sharer_rides,
+            'owner_rides_number': len(owner_rides),
+            'driver_rides_number': len(driver_rides),
+            'sharer_rides_number': len(sharer_rides),
+            'my_ride_number': len(owner_rides) + len(driver_rides) + len(sharer_rides),
+        }
+        return render(request, 'myrides.html', context=context)
 
 def join_ride(request,pk):
     if request.method == "GET":
@@ -41,8 +65,6 @@ def join_ride(request,pk):
         ride.sharer.add(sharer_user)
         messages.add_message(request, messages.SUCCESS, 'You have successfully joined a ride')
         return redirect('myrides')
-
-
 
 def sharer_search_result(request):
     if request.method == 'POST':
