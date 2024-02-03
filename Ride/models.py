@@ -24,6 +24,7 @@ class Ride(models.Model):
     owner_desired_arrival_time = models.DateTimeField(blank=False, null=False, default=half_hour_from_now())
 
     num_passengers_owner_party = models.PositiveIntegerField()
+    num_passengers_sharer_party = models.PositiveIntegerField(default=0)
     is_shareable = models.BooleanField(default=False)
     owner_desired_vehicle_type = models.IntegerField(choices=VehicleType, blank=True, null=True)
     special_requests = models.TextField(blank=True, null=True)
