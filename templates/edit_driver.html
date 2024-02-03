@@ -113,7 +113,10 @@
                                                 <div class="row">
                                                     <div class="col-xxl-3 col-md-3"><strong>Maximum Number of Passengers:</strong></div>
                                                     <div class="col col-md-8">
-                                                        <input class="form-control " type="text" id="passengerCount" name="maximum_number_of_passengers" placeholder="" value="{{ maximum_passenger_number }}" >
+                                                        <input class="form-control " type="text" id="passengerCount" name="maximum_number_of_passengers" placeholder="" value="{% if maximum_passenger_number %}{{ maximum_passenger_number }}{% else %}{% endif %}" >
+                                                        <div class="col">
+                                                            <span style="color: var(--bs-primary);font-style: italic;font-size: 13px;">DuberX: 4,   DuberXL: 4-6,   Duber Luxury: 4-6</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -123,7 +126,7 @@
                                                 <div class="row">
                                                     <div class="col-xxl-3 col-md-3"><strong class="align-middle" >Licence Number:</strong></div>
                                                     <div class="col col-md-8">
-                                                        <input class="form-control" type="text" name="licence_number" placeholder="" value="{{ licence_number }}">
+                                                        <input class="form-control" type="text" name="licence_number" placeholder="" value="{% if licence_number %}{{ licence_number }}{% else %}{% endif %}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -133,7 +136,7 @@
                                                 <div class="row">
                                                     <div class="col-xxl-3 col-md-3"><strong >Special Vehicle Info:</strong></div>
                                                     <div class="col col-md-8">
-                                                        <input class="form-control" type="text" name="special_vehicle_info" placeholder="" value ="{{ special_vehicle_info }}">
+                                                        <input class="form-control" type="text" name="special_vehicle_info" placeholder="" value="{% if special_vehicle_info %}{{ special_vehicle_info }}{% else %}{% endif %}">
                                                     </div>
                                                 </div>
                                             </div>
@@ -155,7 +158,7 @@
         <div class="container text-white py-4 py-lg-5">
             <ul class="list-inline">
                 <li class="list-inline-item me-4"><a class="link-light" href="{% url 'homepage' %}">Home</a></li>
-                <li class="list-inline-item me-4"><a class="link-light" href="#">About</a></li>
+                <li class="list-inline-item me-4"><a class="link-light" href="{% url 'about' %}">About</a></li>
                 <li class="list-inline-item"><a class="link-light" href="{% url 'contact' %}">Contact</a></li>
             </ul>
             <p style="color: var(--bs-white);">Created by Fangcheng (fg96) and Kenan (kd305)</p>
@@ -198,7 +201,7 @@
     <script>   
     function redirectToSetting() {
         function isPositiveInteger(value) {
-            return Number.isInteger(value)  && value > 0 && value<= 8 ;
+            return Number.isInteger(value)  && value > 0  ;
         }
 
         var are_you_a_driver = document.forms["edit_driver_form"]["are_you_a_driver"].value;
@@ -223,6 +226,18 @@
         }
         if (identity == true && (licence_number == "" || licence_number == null)) {
             message += "Licence Number is blank, please fill in all required fields\n";
+            isError = true;
+        }
+        if (identity === true && (vehicle_type=="1" && maximum_number_of_passengers != 4 )) {
+            message += "The number of passenger of DuberX should be 4\n";
+            isError = true;
+        }
+        if (identity === true && (vehicle_type=="2" && (maximum_number_of_passengers < 4 || maximum_number_of_passengers > 6))) {
+            message += "The number of passenger of DuberXL should between 4 and 6\n";
+            isError = true;
+        }
+        if (identity === true && (vehicle_type=="3" && (maximum_number_of_passengers < 4 || maximum_number_of_passengers > 6))) {
+            message += "The number of passenger of Duber Luxury should between 4 and 6\n";
             isError = true;
         }
         if (isError) {

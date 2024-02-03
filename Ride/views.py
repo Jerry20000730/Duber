@@ -22,7 +22,7 @@ def myrides(request):
             driver_rides = Ride.objects.filter(driver=driver)
         else:
             driver_rides = []
-        sharer_rides = Ride.objects.filter(sharer=request.user)
+        sharer_rides = Ride.objects.filter(sharer=request.user).all()
         context = {
             'owner_rides': owner_rides,
             'driver_rides': driver_rides,
