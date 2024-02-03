@@ -255,7 +255,7 @@ def ride_detail(request, pk):
     owner = get_user_model().objects.filter(username=ride.owner).first()
     if ride.driver is not None:
         driver = DuberDriver.objects.filter(duber_user=ride.driver).first()
-        driver_user = DuberDriver.objects.filter(duber_user=driver.duber_user).first()
+        driver_user = driver.duber_user
     else:
         driver = None
         driver_user = None
