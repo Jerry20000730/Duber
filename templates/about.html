@@ -6,20 +6,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>DuberLogin</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/AlfaSlabOne.css' %}">
-    <link rel="stylesheet" href="{% static 'css/Allura.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alfa+Slab+One&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allura&amp;display=swap">
     <link rel="stylesheet" href="{% static 'css/bs-theme-overrides.css' %}">
     <link rel="stylesheet" href="{% static 'css/Banner-Heading-Image-images.css' %}">
     <link rel="stylesheet" href="{% static 'css/Navbar-Centered-Links-icons.css' %}">
 </head>
 
-<body class="d-flex flex-column h-100">
+<body>
     <nav class="navbar navbar-expand sticky-top py-3" style="height: 120px;width: auto;padding: 16px 0px;text-align: center;position: relative;overflow: visible;transform: translate(0px);">
         <div class="container"><a class="navbar-brand d-flex align-items-center" href="{% url 'homepage' %}"><span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"><img class="border rounded" src="{% static 'img/duber.png' %}" width="50"></span><span>&nbsp;&nbsp;<strong style="color: #012169;">Duber</strong></span></a>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link active" href="{% url 'driver_about' %}">Driver</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'driver_about' %}">Driver</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Ride Owner</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Ride Sharer</a></li>
                 </ul>
@@ -36,37 +36,31 @@
             </div>
         </div>
     </nav>
-    <div class="w-75 m-auto pb-5">
-        <div class="card">
-            <div class="card-body p-2">
-                <div class="container py-4 py-xl-5">
-                    <div class="row mb-3" id="driver_info_title">
-                        <div class="col-md-8 col-xl-6 text-center mx-auto">
-                            <h2>Duber Driver</h2>
-                            <p>Last updated: 2024-02-02</p>
-                            <div class="bs-icon-xl bs-icon-circle bs-icon-primary"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-steering-wheel" style="font-size: 35px;">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-                                    <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
-                                    <path d="M12 14l0 7"></path>
-                                    <path d="M10 12l-6.75 -2"></path>
-                                    <path d="M14 12l6.75 -2"></path>
-                                </svg></div>
+    <div class="container py-4 py-xl-5" data-aos="fade-up" style="width: auto;">
+        <div class="row mb-5">
+            <div class="col text-center mx-auto">
+                <h2>Our Team</h2>
+                <p class="w-lg-75" style="font-size: 20px;">The purpose of establishing this website is that for many commuters, it is difficult to find other commuters that share the same destination. Duber aims to help both users and drivers to share rides conveniently and efficiently. Duber is created by two jobless students, Fangcheng and Kenan. Both of them are about to be jobless after graduation because of the fierce market and nonsense rat races. If you like this project, please don't hesitate to connect with us over email. If you have any internship, please tell us immediately since we are in a urgent need for summer internship.</p>
+                <small>Last updated: 2024-02-02</small>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="card border-0 shadow-none">
+                    <div class="card-body d-flex align-items-center p-0"><img class="rounded-circle flex-shrink-0 me-3 fit-cover" width="130" height="130" src="{% static 'img/fangcheng_icon.jpg' %}">
+                        <div>
+                            <h5 class="fw-bold text-primary mb-0"><strong>Fangcheng Guo</strong></h5>
+                            <p class="text-muted mb-1">MEng ECE</p>
                         </div>
                     </div>
-                    <hr>
-                    <div class="row mb-5" id="driver_info_intro">
-                        <div class="col">
-                            <h2>Driver Intro</h2>
-                            <p style="font-size: 20px;">If you have a car, you can register as a driver. Drivers can search for open ride requests, claim and start a ride service. A user can only be registered as a driver if the user is logged in. A registered driver should be able to search for open ride requests (filtered by the driver's vehicle capacity and type / special info, if applicable). Driver should have car (obviously) if they want to register as a driver. A logged in User should be able to register as a driver by entering their personal &amp; vehicle info.</p>
-                        </div>
-                    </div>
-                    <div class="row mb-5" id="driver_info_register">
-                        <div class="col">
-                            <h2>How to register as a driver?</h2>
-                            <p style="font-size: 20px;">To begin with, login as a normal duber user. After that, go to setting - driver info - click "edit"</p><img class="img-thumbnail img-fluid" src="{% static 'img/driver_info_1.png' %}">
-                            <p class="mt-3" style="font-size: 20px;">Choose 'Yes' for "Are you a driver", and set up your driver info, including:<br>&nbsp; &nbsp; 1) Vehicle Type<br>&nbsp; &nbsp; 2) License Plate Number<br>&nbsp; &nbsp; 3) Maximum Number of Passenger<br>&nbsp; &nbsp; 4) Special Info (optional)</p><img class="img-thumbnail img-fluid" src="{% static 'img/driver_info_2.png' %}">
-                            <p class="mt-3" style="font-size: 20px;">Once you click "Save", you are now ready as a driver!</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card border-0 shadow-none">
+                    <div class="card-body d-flex align-items-center p-0" style="width: auto;"><img class="rounded-circle flex-shrink-0 me-3 fit-cover" width="130" height="130" src="{% static 'img/kenan_icon.jpg' %}">
+                        <div>
+                            <h5 class="fw-bold text-primary mb-0">Kenan Duan</h5>
+                            <p class="text-muted mb-1">MEng ECE</p>
                         </div>
                     </div>
                 </div>
@@ -86,7 +80,7 @@
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{% static 'js/bs-init.js' %}"></script>
-    <script src="{% static 'js/Multi-step-form-script.js'%}"></script>
+    <script src="{% static 'js/jquery-2.0.0.min.js' %}"></script>
 </body>
 
 </html>
