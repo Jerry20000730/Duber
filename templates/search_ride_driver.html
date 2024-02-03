@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html data-bs-theme="light" class="h-100" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>My Rides</title>
+    <style>
+        .no-display {
+            display: none;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alfa+Slab+One&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allura&amp;display=swap">
+    <link rel="stylesheet" href="{% static 'css/bs-theme-overrides.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Banner-Heading-Image-images.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Navbar-Centered-Links-icons.css' %}">
+</head>
+
+<body class="d-flex flex-column h-100 min-vh-100">
+    <nav class="navbar navbar-expand sticky-top py-3" style="min-height: 120px;text-align: center;position: relative;transform: translate(0px);">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="#"><span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"><img class="border rounded" src="{% static 'img/duber.png' %}" width="50"></span><span>&nbsp;&nbsp;<strong style="color: #012169;">Duber</strong></span></a>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'myrides' %}">My rides</a></li> 
+                    <li class="nav-item"><a class="nav-link" href="{% url 'request_ride' %}">Request new rides</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'search_ride' %}">Search rides</a></li>
+                </ul>
+                <div class="row">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col px-1">
+                               <p class="lh-sm fw-light" style="margin-bottom: 0px;font-weight: bold;padding: 2px;padding-bottom: 0px;">Welcome {{ user.first_name }}</p>
+                            </div>
+                            <div class="col px-1"><a class="btn btn-primary" role="button" style="font-weight: bold;border-style: solid;" href="{% url 'setting' %}">Settings</a></div>
+                            <div class="col align-middle"><button class="btn btn-primary text-bg-light px-1" role="button" data-bs-toggle="modal" data-bs-target="#log-out-button" >Logout</button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="modal fade" tabindex="-1" id = "log-out-button">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Log Out</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure to Log Out?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <a type="button" class="btn btn-primary" role="button" href="{% url 'logout' %}">Continue</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-75 p-3 mx-auto" style="border-radius: 15px;">
+        <div>
+            <h2 style="padding-top: 10px;padding-left: 15px;padding-bottom: 5px;padding-right: 15px;color: var(--bs-primary)">Open Ride Available (for driver)</h2>
+            <hr style="transform: scale(1);">
+        </div>
+        <div id="spinnerbox">
+            <div class="row" style="">
+                <div class="col" style="text-align: center">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if my_ride_number == 0 %}
+        <div id="databox" class="no-display">
+            <div class="row" style="height: 60vh">
+               <div class="col" style="text-align: center">
+                   <h2 style="opacity: 0.6">No ride has been found</h2>
+               </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if res_ride_number != 0 %}
+        <div id="databox" class="no-display">
+            <div class="row">
+                {% for ride in rides %}
+                <div class="col col-lg-4 col-md-6 col-sm-12">
+                    <div class="card m-2 rounded" style="border-style: dashed;border-color: var(--bs-primary-text-emphasis);"><img class="card-img-top w-100 d-block p-3" src="{% static 'img/ride-icon.png' %}">
+                        <div class="card-body">
+                            <h4 class="card-title" style="font-family: 'Alfa Slab One', serif;">{{ ride.dst_addr }}</h4>
+                            <div>
+                                <div class="row align-items-center">
+                                    <div class="col col-1"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-clock">
+                                            <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z"></path>
+                                            <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"></path>
+                                        </svg></div>
+                                    <div class="col col-11">
+                                        <p style="margin-bottom: 0px;">{{ ride.owner_desired_arrival_time }}</p>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center">
+                                    <div class="col col-1"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-person-check-fill mx-auto">
+                                            <path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"></path>
+                                            <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"></path>
+                                        </svg></div>
+                                    <div class="col col-11">
+                                        <p style="margin-bottom: 0px;">{{ ride.owner }}</p>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center">
+                                    <div class="col col-1"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-broadcast mx-auto">
+                                            <path d="M3.05 3.05a7 7 0 0 0 0 9.9.5.5 0 0 1-.707.707 8 8 0 0 1 0-11.314.5.5 0 0 1 .707.707m2.122 2.122a4 4 0 0 0 0 5.656.5.5 0 1 1-.708.708 5 5 0 0 1 0-7.072.5.5 0 0 1 .708.708m5.656-.708a.5.5 0 0 1 .708 0 5 5 0 0 1 0 7.072.5.5 0 1 1-.708-.708 4 4 0 0 0 0-5.656.5.5 0 0 1 0-.708m2.122-2.12a.5.5 0 0 1 .707 0 8 8 0 0 1 0 11.313.5.5 0 0 1-.707-.707 7 7 0 0 0 0-9.9.5.5 0 0 1 0-.707zM10 8a2 2 0 1 1-4 0 2 2 0 0 1 4 0"></path>
+                                        </svg></div>
+                                    <div class="col col-11">
+                                        {% if ride.status == 1 %}<p style="margin-bottom: 0px;">Open</p>{% endif %}
+                                        {% if ride.status == 2 %}<p style="margin-bottom: 0px;">Confirm</p>{% endif %}
+                                        {% if ride.status == 3 %}<p style="margin-bottom: 0px;">Completed</p>{% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col col-sm-6 mx-auto">
+                                    <a class="btn btn-primary w-100" type="button" style="padding: 7px 14px;margin-top: 10px;" href="{% url 'claim_ride_driver' ride.ride_id %}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-right" viewBox="0 0 16 16">
+                                            <path fill-rule="evenodd" d="M14 2.5a.5.5 0 0 0-.5-.5h-6a.5.5 0 0 0 0 1h4.793L2.146 13.146a.5.5 0 0 0 .708.708L13 3.707V8.5a.5.5 0 0 0 1 0z"></path>
+                                        </svg>
+                                            &nbsp; Claim
+                                    </a>
+                                </div>
+                                <div class="col col-sm-6 mx-auto">
+                                    <a class="btn btn-primary w-100" type="button" style="padding: 7px 14px;margin-top: 10px;" href="{% url 'ride_detail' ride.ride_id %}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-search"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path></svg>
+                                        &nbsp; Detail
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    </div>
+    <footer class="text-center bg-primary mt-auto w-100" style="height: 218.983px;">
+        <div class="container text-white py-4 py-lg-5">
+            <ul class="list-inline">
+                <li class="list-inline-item me-4"><a class="link-light" href="{% url 'homepage' %}">Home</a></li>
+                <li class="list-inline-item me-4"><a class="link-light" href="#">About</a></li>
+                <li class="list-inline-item"><a class="link-light" href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+            <p style="color: var(--bs-white);">Created by Fangcheng (fg96) and Kenan (kd305)</p>
+            <p style="color: var(--bs-white);">Copyright © 2024 Duber</p>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/jquery-2.0.0.min.js' %}"></script>
+    <script>
+        const spinnerbox = document.getElementById('spinnerbox');
+        const databox = document.getElementById('databox');
+        
+        $.ajax({
+            url: "{% url 'search_ride_driver' %}",
+            type: "GET",
+            success: function (res) {
+                setTimeout(() => {
+                    spinnerbox.classList.add('no-display');
+                    databox.classList.remove('no-display');
+                }, 500);
+            },
+            error: function (er) {
+                console.log('error');
+            }
+        })
+    </script>
+</body>
+
+</html>
