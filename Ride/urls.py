@@ -19,4 +19,5 @@ urlpatterns = [
     path('search_ride/sharer/join_ride/<uuid:pk>/<int:num_passenger_sharer_party>',views.join_ride, name='join_ride'),
     path('search_ride/driver/claim_ride/<uuid:pk>',views.claim_ride_driver, name='claim_ride_driver'),
     path('complete_ride/<uuid:pk>',views.complete_ride, name='complete_ride'),
+    path('start_ride/<uuid:pk>',views.start_ride, name='start_ride'),
 ]

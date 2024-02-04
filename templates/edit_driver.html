@@ -6,16 +6,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Edit Driver Information</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Alfa+Slab+One&amp;display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allura&amp;display=swap">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/AlfaSlabOne.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Allura.css' %}">
     <link rel="stylesheet" href="{% static 'css/bs-theme-overrides.css' %}">
     <link rel="stylesheet" href="{% static 'css/Banner-Heading-Image-images.css'%}">
     <link rel="stylesheet" href="{% static 'css/Login-Form-Basic-icons.css' %}">
     <link rel="stylesheet" href="{% static 'css/Multi-step-form.css' %}">
     <link rel="stylesheet" href="{% static 'css/Navbar-Centered-Links-icons.css' %}">
-
-
 </head>
 
 <body>
@@ -165,7 +163,7 @@
             <p style="color: var(--bs-white);">Copyright © 2024 Duber</p>
         </div>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/bs-init.js' %}"></script>
     <script src="{% static 'js/Multi-step-form-script.js' %}"></script>
  <script>
@@ -255,15 +253,13 @@
 
         var chooseIdentitySelect = document.getElementById("chooseIdentity");
         var driverContent = document.getElementById("driverContent");
-
-        // 获取选中的选项值
+        
         var selectedValue = chooseIdentitySelect.value;
-
-        // 根据选项值控制后续元素的可见性
+        
         if (selectedValue === "121") {
-            driverContent.style.display = "block"; // 显示内容
+            driverContent.style.display = "block";
         } else {
-            driverContent.style.display = "none"; // 隐藏内容
+            driverContent.style.display = "none";
         }
     }
 </script>
