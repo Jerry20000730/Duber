@@ -197,8 +197,10 @@
                     </div>
                     <div id="button-ride-func" class="w-50 m-5">
                         <div class="row">
-                            <div class="col col-sm-6"><a class="btn btn-primary w-100" type="button" href="{% url 'edit_detail' ride.ride_id %}">Edit The Ride</a></div>
-                            <div class="col col-sm-6"><a class="btn btn-primary w-100" type="button" href="{% url 'myrides' %}">Back</a></div>
+                            {% if status == "1" %}
+                            <div class="col "><a class="btn btn-primary w-100" type="button" href="{% url 'edit_detail' ride.ride_id %}">Edit The Ride</a></div>
+                            {% endif %}
+                            <div class="col "><a class="btn btn-primary w-100" type="button" href="{% url 'myrides' %}">Back</a></div>
                         </div>
                     </div>
                 </div>
