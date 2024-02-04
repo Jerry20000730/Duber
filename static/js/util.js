@@ -41,6 +41,8 @@ function validateRideRequest() {
     var dst_addr = document.forms["RideRequestForm"]["dst_addr"].value;
     var owner_desired_arrival_time = document.forms["RideRequestForm"]["owner_desired_arrival_time"].value;
     var num_passengers_owner_party = document.forms["RideRequestForm"]["num_passengers_owner_party"].value;
+    console.log("here")
+    console.log(num_passengers_owner_party)
     var message = "";
     var isError = false;
     if (dst_addr == null || dst_addr === "") {

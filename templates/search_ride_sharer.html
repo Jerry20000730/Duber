@@ -74,7 +74,7 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col col-sm-2"><label class="col-form-label" style="color: var(--bs-primary);font-weight: bold;">Num. of Passengers</label></div>
-                        <div class="col"><input class="form-control" type="number" name="num_passenger_owner_party" min="1"><span style="color: var(--bs-primary);font-style: italic;font-size: 13px;">The number of passenger must be larger than zero</span></div>
+                        <div class="col"><input class="form-control" type="number" name="num_passenger_sharer_party" min="1"><span style="color: var(--bs-primary);font-style: italic;font-size: 13px;">The number of passenger must be larger than zero</span></div>
                     </div>
                     <div class="row mb-3">
                         <div class="col" style="text-align: center;"><a class="btn btn-primary" type="submit" onclick="redirectToSetting1()"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-search" >
@@ -108,7 +108,7 @@
             var new_dst_addr = document.forms["search_ride_sharer_form"]["dst_addr"].value;
             var new_first = document.forms["search_ride_sharer_form"]["arrival_window_first"].value;
             var new_second = document.forms["search_ride_sharer_form"]["arrival_window_second"].value;
-            var new_number = document.forms["search_ride_sharer_form"]["num_passenger_owner_party"].value;
+            var new_number = document.forms["search_ride_sharer_form"]["num_passenger_sharer_party"].value;
             var isError = false;
             var message = "";
             if (new_dst_addr == null || new_dst_addr == "") {
