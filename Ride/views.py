@@ -58,20 +58,25 @@ def myrides(request):
         }
         return render(request, 'myrides.html', context=context)
 
-def join_ride(request,pk):
+
+def join_ride(request, pk, num_passenger_sharer_party):
     if request.method == "GET":
-        ride=Ride.objects.get(ride_id=pk)
+        ride = Ride.objects.get(ride_id=pk)
         sharer_user = get_user_model().objects.get(username=request.user.username)
         ride.sharer.add(sharer_user)
+        # update to the ride table
+        current_sharer_num = Ride.objects.get(ride_id=pk).num_passengers_sharer_party
+        Ride.objects.filter(ride_id=pk).update(num_passengers_sharer_party=num_passenger_sharer_party+current_sharer_num)
         messages.add_message(request, messages.SUCCESS, 'You have successfully joined a ride')
         return redirect('myrides')
+
 
 def sharer_search_result(request):
     if request.method == 'POST':
         new_dst_addr = request.POST.get('dst_addr')
         arrival_window_first = request.POST.get('arrival_window_first')
         arrival_window_second = request.POST.get('arrival_window_second')
-        required_num_passenger_owner_party = request.POST.get('num_passenger_owner_party')
+        num_passenger_sharer_party = request.POST.get('num_passenger_sharer_party')
 
         rides = Ride.objects.filter(
             Q(dst_addr=new_dst_addr) &
@@ -80,12 +85,14 @@ def sharer_search_result(request):
             Q(status=RideStatus.OPEN) &
             ~Q(driver_id__isnull=True) &
             Q(is_shareable=True) &
-            Q(num_passengers_owner_party__lte=F('driver__maximum_passenger_number') - required_num_passenger_owner_party)
+            Q(num_passengers_owner_party__lte=F('driver__maximum_passenger_number') - num_passenger_sharer_party - F('num_passengers_owner_party'))
         )
 
-        return render(request, 'sharer_search_result.html',context={'rides': rides})
+        return render(request, 'sharer_search_result.html',
+                      context={'rides': rides, 'num_passenger_sharer_party': num_passenger_sharer_party})
     else:
         return redirect('sharer_search_result')
+
 
 def search_ride_sharer(request):
     return render(request, 'search_ride_sharer.html')
@@ -362,8 +369,7 @@ def search_ride_driver(request):
     driver_duberuser = get_user_model().objects.get(username=request.user.username)
     driver = DuberDriver.objects.filter(duber_user=driver_duberuser).first()
 
-    rides = Ride.objects.annotate(num_passengers_sharer_party=Count('sharer')) \
-        .annotate(sum_passengers=F('num_passengers_owner_party') + F('num_passengers_sharer_party')) \
+    rides = Ride.objects.annotate(sum_passengers=F('num_passengers_owner_party') + F('num_passengers_sharer_party')) \
         .filter(status=RideStatus.OPEN,
                 driver=None,
                 sum_passengers__lte=driver.maximum_passenger_number) \

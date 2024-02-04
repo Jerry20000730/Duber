@@ -28,7 +28,7 @@ class DuberRideRequestForm(forms.ModelForm):
                 self.fields[field].widget.attrs['placeholder'] = 'Any special requests?'
             elif field == 'num_passengers_owner_party':
                 self.fields[field].widget.attrs['min'] = '1'
-                self.fields[field].widget.attrs['placeholder'] = '1'
+                self.fields[field].widget.attrs['placeholder'] = 'Number of passengers in your party'
 
     def clean(self):
         if self.cleaned_data['num_passengers_owner_party'] < 1:
