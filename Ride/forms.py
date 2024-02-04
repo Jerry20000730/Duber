@@ -35,3 +35,17 @@ class DuberRideRequestForm(forms.ModelForm):
             raise forms.ValidationError("Number of passengers cannot be less than 1!")
         if self.cleaned_data['owner_desired_arrival_time'] < timezone.now():
             raise forms.ValidationError("Desired arrival time cannot be in the past!")
+
+
+class RoleBasedFilteringForm(forms.Form):
+    role = forms.MultipleChoiceField(label="Filter by role",
+                             choices=[('owner', 'Owner'), ('driver', 'Driver'), ('sharer', 'Sharer')],
+                             widget=forms.CheckboxSelectMultiple,
+                             required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(RoleBasedFilteringForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data
