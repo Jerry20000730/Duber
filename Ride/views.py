@@ -1,12 +1,15 @@
+from typing import List
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.db.models import F, Count, Q
-from django.http import HttpResponse
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.utils import timezone
 
 from Account.models import DuberDriver
+from Duber import settings
 from Duber.settings import RideStatus
 from Ride.forms import DuberRideRequestForm, RoleBasedFilteringForm
 from Ride.models import Ride
@@ -412,4 +415,29 @@ def claim_ride_driver(request, pk):
     ride.save()
     messages.add_message(request, messages.SUCCESS, "You have successfully claimed the ride!")
     return redirect('myrides')
+
+@login_required(login_url='/account/login')
+def start_ride(request, pk):
+    ride = Ride.objects.get(ride_id=pk)
+    ride.status = RideStatus.CONFIRM
+    ride.save()
+    sender_list = []
+    if ride.owner is not None:
+        owner_user = get_user_model().objects.get(username=ride.owner)
+        sender_list.append(owner_user.email)
+    if ride.sharer is not None:
+        sharer_users = ride.sharer.all()
+        for user in sharer_users:
+            sender_list.append(user.email)
+    print(sender_list)
+    messages.add_message(request, messages.SUCCESS, "You have successfully started the ride!")
+    return redirect('myrides')
+
+def send_confirmation_email(sender_list: List[str], ride_dst: str, driver_username: str):
+    send_mail(
+        'Ride Confirmation',
+        'Your ride to {} has been confirmed by {}!'.format(ride_dst, driver_username),
+        settings.EMAIL_HOST_USER,
+        sender_list
+    )
 

@@ -148,3 +148,13 @@ class VehicleType(models.IntegerChoices):
     DuberX = 1
     DuberXL = 2
     DuberLuxury = 3
+
+# email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'outlook.office365.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'duber-no-reply@outlook.com'
+EMAIL_HOST_PASSWORD = '12345678abc'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
