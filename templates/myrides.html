@@ -79,31 +79,14 @@
             <h2 style="padding-top: 10px;padding-left: 15px;padding-bottom: 5px;padding-right: 15px;color: var(--bs-primary)">My Duber Rides</h2>
             <hr style="transform: scale(1);">
         </div>
-        <div id="filter">
+        <div id="filter" class="w-25 p-3">
             <form name="role-based-filtering-form" method="post" action="{% url 'myrides' %}">
                 {% csrf_token %}
-                <div class="row p-2">
-                    <div class="col">
-                        <div class="form-group" id="role">
-                            <label for="rideRoleFilter">Filter by Role:  </label>
-                            <div class="form-check form-check-inline">
-                                <input name='isOwner' class="form-check-input" type="checkbox" id="inlineRideRoleCheckbox1" value="1" checked>
-                                <label class="form-check-label" for="inlineRideRoleCheckbox1">Owner</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input name='isSharer' class="form-check-input" type="checkbox" id="inlineRideRoleCheckbox2" value="1" checked>
-                                <label class="form-check-label" for="inlineCheckbox2">Sharer</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input name='isDriver' class="form-check-input" type="checkbox" id="inlineRideRoleCheckbox3" value="1" checked>
-                                <label class="form-check-label" for="inlineCheckbox3">Driver</label>
-                            </div>
-                            <button class="btn btn-primary" type="submit">Filter</button>
-                        </div>
-                    </div>
-                </div>
+                {{ form }}
+                <input class="btn btn-primary mt-2" type="submit" value="Filter">
             </form>
         </div>
+        <hr>
         <div id="spinnerbox" class="">
             <div class="row" style="">
                 <div class="col" style="text-align: center">
@@ -245,9 +228,37 @@
                                     </div>
                                 </div>
                             </div>
+                            {% if ride.status == 1 %}
+                                <div class="row w-75 mx-auto">
+                                    <div class="col col-sm-7">
+                                        <div><a class="btn btn-danger w-100" type="button" style="padding: 7px 14px;margin-top: 10px;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                        <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
+                                        </svg>&nbsp; Start the ride</a></div>
+                                    </div>
+                                    <div class="col col-sm-5">
+                                        <div><a class="btn btn-primary w-100" type="button" style="padding: 7px 14px;margin-top: 10px;" href="{% url 'ride_detail' ride.ride_id %}"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-search">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
+                                        </svg>&nbsp; Detail</a></div>
+                                    </div>
+                                </div>
+                            {% elif ride.status == 2 %}
+                                <div class="row w-75 mx-auto">
+                                    <div class="col col-sm-7">
+                                        <div><a class="btn btn-danger w-100" type="button" style="padding: 7px 14px;margin-top: 10px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-search">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
+                                        </svg>&nbsp; Complete the ride</a></div>
+                                    </div>
+                                    <div class="col col-sm-5">
+                                        <div><a class="btn btn-primary w-100" type="button" style="padding: 7px 14px;margin-top: 10px;" href="{% url 'ride_detail' ride.ride_id %}"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-search">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
+                                        </svg>&nbsp; Detail</a></div>
+                                    </div>
+                                </div>
+                            {% elif ride.status == 3 %}
                             <div class="w-75 mx-auto"><a class="btn btn-primary w-100" type="button" style="padding: 7px 14px;margin-top: 10px;" href="{% url 'ride_detail' ride.ride_id %}"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-search">
                                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
                                     </svg>&nbsp; Detail</a></div>
+                            {% endif %}
                             </div>
                         </div>
                     </div>

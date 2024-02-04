@@ -38,9 +38,14 @@ class DuberRideRequestForm(forms.ModelForm):
 
 
 class RoleBasedFilteringForm(forms.Form):
-    role = forms.ChoiceField(label="Filter by role",
+    role = forms.MultipleChoiceField(label="Filter by role",
                              choices=[('owner', 'Owner'), ('driver', 'Driver'), ('sharer', 'Sharer')],
-                             widget=forms.CheckboxSelectMultiple)
+                             widget=forms.CheckboxSelectMultiple,
+                             required=False)
 
     def __init__(self, *args, **kwargs):
         super(RoleBasedFilteringForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data

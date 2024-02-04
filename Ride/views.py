@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.db.models import F, Count, Q
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.utils import timezone
@@ -15,7 +16,8 @@ from Ride.models import Ride
 @login_required(login_url='/account/login')
 def myrides(request):
     if request.method == "GET":
-        form = RoleBasedFilteringForm()
+        initial_data = {'role': ['owner', 'driver', 'sharer']}
+        form = RoleBasedFilteringForm(initial_data)
         owner_rides = Ride.objects.filter(owner=request.user)
         if request.user.is_driver:
             driver = DuberDriver.objects.filter(duber_user=request.user).first()
@@ -35,38 +37,45 @@ def myrides(request):
         }
         return render(request, 'myrides.html', context=context)
     else:
-        isOwner = request.POST.get('isOwner')
-        isDriver = request.POST.get('isDriver')
-        isSharer = request.POST.get('isSharer')
-        owner_rides = []
-        driver_rides = []
-        sharer_rides = []
-        if isOwner == "1":
+        form = RoleBasedFilteringForm(request.POST)
+        if form.is_valid():
+            role = form.cleaned_data['role']
             owner_rides = Ride.objects.filter(owner=request.user)
-        if isDriver == "1":
             if request.user.is_driver:
                 driver = DuberDriver.objects.filter(duber_user=request.user).first()
                 driver_rides = Ride.objects.filter(driver=driver)
-        if isSharer == "1":
-            sharer_rides = Ride.objects.filter(sharer=request.user)
-        context = {
-            'owner_rides': owner_rides,
-            'driver_rides': driver_rides,
-            'sharer_rides': sharer_rides,
-            'owner_rides_number': len(owner_rides),
-            'driver_rides_number': len(driver_rides),
-            'sharer_rides_number': len(sharer_rides),
-            'my_ride_number': len(owner_rides) + len(driver_rides) + len(sharer_rides),
-        }
-        return render(request, 'myrides.html', context=context)
+            else:
+                driver_rides = []
+            sharer_rides = Ride.objects.filter(sharer=request.user).all()
+            if 'owner' not in role:
+                owner_rides = []
+            if 'driver' not in role:
+                driver_rides = []
+            if 'sharer' not in role:
+                sharer_rides = []
+            current_data = form.cleaned_data
+            form = RoleBasedFilteringForm(current_data)
+            context = {
+                'form': form,
+                'owner_rides': owner_rides,
+                'driver_rides': driver_rides,
+                'sharer_rides': sharer_rides,
+                'owner_rides_number': len(owner_rides),
+                'driver_rides_number': len(driver_rides),
+                'sharer_rides_number': len(sharer_rides),
+                'my_ride_number': len(owner_rides) + len(driver_rides) + len(sharer_rides),
+            }
+            return render(request, 'myrides.html', context=context)
 
-def join_ride(request,pk):
+
+def join_ride(request, pk):
     if request.method == "GET":
-        ride=Ride.objects.get(ride_id=pk)
+        ride = Ride.objects.get(ride_id=pk)
         sharer_user = get_user_model().objects.get(username=request.user.username)
         ride.sharer.add(sharer_user)
         messages.add_message(request, messages.SUCCESS, 'You have successfully joined a ride')
         return redirect('myrides')
+
 
 def sharer_search_result(request):
     if request.method == 'POST':
@@ -82,12 +91,14 @@ def sharer_search_result(request):
             Q(status=RideStatus.OPEN) &
             ~Q(driver_id__isnull=True) &
             Q(is_shareable=True) &
-            Q(num_passengers_owner_party__lte=F('driver__maximum_passenger_number') - required_num_passenger_owner_party)
+            Q(num_passengers_owner_party__lte=F(
+                'driver__maximum_passenger_number') - required_num_passenger_owner_party)
         )
 
-        return render(request, 'sharer_search_result.html',context={'rides': rides})
+        return render(request, 'sharer_search_result.html', context={'rides': rides})
     else:
         return redirect('sharer_search_result')
+
 
 def search_ride_sharer(request):
     return render(request, 'search_ride_sharer.html')
@@ -401,3 +412,4 @@ def claim_ride_driver(request, pk):
     ride.save()
     messages.add_message(request, messages.SUCCESS, "You have successfully claimed the ride!")
     return redirect('myrides')
+
