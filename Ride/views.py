@@ -431,7 +431,7 @@ def start_ride(request, pk):
         sharer_users = ride.sharer.all()
         for user in sharer_users:
             sender_list.append(user.email)
-    print(sender_list)
+    send_confirmation_email(sender_list, ride.dst_addr, request.user.username)
     messages.add_message(request, messages.SUCCESS, "You have successfully started the ride!")
     return redirect('myrides')
 
