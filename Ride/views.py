@@ -301,7 +301,7 @@ def ride_detail(request, pk):
         driver = None
         driver_user = None
     if ride.sharer is not None:
-        sharer = get_user_model().objects.filter(username=ride.sharer).all()
+        sharer = ride.sharer.all()
     else:
         sharer = None
     context = {
@@ -419,6 +419,11 @@ def claim_ride_driver(request, pk):
     return redirect('myrides')
 
 @login_required(login_url='/account/login')
+def complete_ride(request, pk):
+    Ride.objects.filter(pk=pk).update(status=RideStatus.COMPLETE)
+    return redirect('myrides')
+
+@login_required(login_url='/account/login')
 def start_ride(request, pk):
     ride = Ride.objects.get(ride_id=pk)
     ride.status = RideStatus.CONFIRM
@@ -442,4 +447,3 @@ def send_confirmation_email(sender_list: List[str], ride_dst: str, driver_userna
         settings.EMAIL_HOST_USER,
         sender_list
     )
-
