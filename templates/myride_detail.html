@@ -165,7 +165,7 @@
                                 {% if sharer|length == 0 %}
                                     <p style="color: var(--bs-primary);">None</p>
                                 {% else %}
-                                    <p style="color: var(--bs-primary);">{{ sharer.username }}</p>
+                                    <p style="color: var(--bs-primary);">{% for user in sharer %}{{ user.username }}{% endfor %}</p>
                                 {% endif %}
                             </div>
                         </div>
