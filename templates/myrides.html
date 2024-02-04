@@ -229,11 +229,11 @@
                                 </div>
                             </div>
                             {% if ride.status == 1 %}
-                                <div class="row w-75 mx-auto">
+                                <div class="row mx-auto">
                                     <div class="col col-sm-7">
                                         <div><a class="btn btn-danger w-100" type="button" style="padding: 7px 14px;margin-top: 10px;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
                                         <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z"/>
-                                        </svg>&nbsp; Start the ride</a></div>
+                                        </svg>&nbsp; Start ride</a></div>
                                     </div>
                                     <div class="col col-sm-5">
                                         <div><a class="btn btn-primary w-100" type="button" style="padding: 7px 14px;margin-top: 10px;" href="{% url 'ride_detail' ride.ride_id %}"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-search">
@@ -242,14 +242,31 @@
                                     </div>
                                 </div>
                             {% elif ride.status == 2 %}
-                                <div class="row w-75 mx-auto">
+                                <div class="modal fade" tabindex="-1" id = "complete-button">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title">Complete</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      </div>
+                                      <div class="modal-body">
+                                        <p>Are you sure to complete this ride?</p>
+                                      </div>
+                                      <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <a type="button" class="btn btn-primary" role="button" href="{% url 'complete_ride' ride.ride_id %}">Continue</a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="row mx-auto">
                                     <div class="col col-sm-7">
-                                        <div><a class="btn btn-danger w-100" type="button" style="padding: 7px 14px;margin-top: 10px;"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-search">
+                                        <div><a class="btn btn-danger w-100" type="button" style="padding: 7px 14px;margin-top: 10px;" data-bs-toggle="modal" data-bs-target="#complete-button"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-search">
                                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
-                                        </svg>&nbsp; Complete the ride</a></div>
+                                        </svg>&nbsp; Complete</a></div>
                                     </div>
                                     <div class="col col-sm-5">
-                                        <div><a class="btn btn-primary w-100" type="button" style="padding: 7px 14px;margin-top: 10px;" href="{% url 'ride_detail' ride.ride_id %}"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-search">
+                                        <div><a class="btn btn-primary w-100" type="button" style="padding: 7px 14px;margin-top: 10px;" data-bs-toggle="modal" data-bs-target="#complete-button"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-search">
                                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
                                         </svg>&nbsp; Detail</a></div>
                                     </div>
