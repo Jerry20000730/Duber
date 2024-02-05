@@ -12,12 +12,13 @@ from Duber.settings import RideStatus, VehicleType
 def half_hour_from_now():
     return timezone.now() + timezone.timedelta(minutes=30)
 
+
 class Ride(models.Model):
     ride_id = models.UUIDField(max_length=10, default=uuid.uuid4, editable=False, primary_key=True)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, to_field='username', blank=False,
                               null=False, related_name='owner')
     driver = models.ForeignKey(DuberDriver, on_delete=models.CASCADE, to_field='duber_user', blank=True,
-                                  null=True, related_name='driver')
+                               null=True, related_name='driver')
     sharer = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='sharer')
 
     dst_addr = models.CharField(max_length=100)
@@ -40,3 +41,17 @@ class Ride(models.Model):
 
     def __str__(self):
         return "{}-owner:{}-driver:{}-dst:{}".format(self.ride_id, self.owner, self.driver, self.dst_addr)
+
+
+class SharerRide(models.Model):
+    ride = models.ForeignKey(Ride, on_delete=models.CASCADE, to_field='ride_id', blank=False, null=False)
+    sharer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, to_field='username', blank=False,
+                               null=False)
+    num_passengers_sharer_party = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        verbose_name = 'sharer ride info'
+        verbose_name_plural = 'sharer rides'
+
+    def __str__(self):
+        return "{}-{}-{}".format(self.ride.ride_id, self.sharer_id, self.num_passengers_sharer_party)

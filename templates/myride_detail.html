@@ -15,7 +15,7 @@
 </head>
 
 <body>
-    <div class="modal fade" tabindex="-1" id = "log-out-button">
+    <div class="modal fade" tabindex="-1" id="log-out-button">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -28,6 +28,40 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             <a type="button" class="btn btn-primary" role="button" href="{% url 'logout' %}">Continue</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" tabindex="-1" id="cancel_ride_confirmation">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Cancel your ride?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure to cancel this ride? You cannot undo this action once you cancel the trip.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+            <a type="button" class="btn btn-primary" role="button" href="{% url 'cancel_ride' ride.ride_id %}">Yes</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" tabindex="-1" id="drop_ride_confirmation">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Cancel your ride?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure to exit the ride you originally want to share with others?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+            <a type="button" class="btn btn-primary" role="button" href="{% url 'drop_ride' ride.ride_id %}">Yes</a>
           </div>
         </div>
       </div>
@@ -56,6 +90,20 @@
     </nav>
     <div class="w-75 p-4 mx-auto mb-5">
         <div style="margin: 0px;">
+            {% if messages %}
+            <div class="position-relative py-4 py-xl-5" id="message_container">
+                {% for message in messages %}
+                    <div id="message" class="container">
+                        <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible fade show" id="EditRideAlert"{% endif %} role="alert">
+                        <button type="button" class="btn-close" data-dismiss="alert" data-bs-dismiss="alert" aria-label="Close"></button>
+                        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}<h4>Error: </h4>{% endif %}
+                        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}<h4>Success: </h4>{% endif %}
+                        {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
             <div class="card" style="box-shadow: 2px 0px 3px 1px;">
                 <div class="card-body d-flex flex-column align-items-center">
                     <h3 class="card-title" style="border-color: var(--bs-primary);color: var(--bs-primary);font-weight: bold;">Duber Ride Details</h3>
@@ -165,7 +213,7 @@
                                 {% if sharer|length == 0 %}
                                     <p style="color: var(--bs-primary);">None</p>
                                 {% else %}
-                                    <p style="color: var(--bs-primary);">{% for user in sharer %}{{ user.username }}{% endfor %}</p>
+                                    <p style="color: var(--bs-primary);">{% for user, num in sharer_num_passenger_mapping.items %}{{ user.username }} ({{ num }}){% endfor %}</p>
                                 {% endif %}
                             </div>
                         </div>
@@ -197,8 +245,10 @@
                     </div>
                     <div id="button-ride-func" class="w-50 m-5">
                         <div class="row">
-                            <div class="col col-sm-6"><a class="btn btn-primary w-100" type="button" href="{% url 'edit_detail' ride.ride_id %}">Edit The Ride</a></div>
-                            <div class="col col-sm-6"><a class="btn btn-primary w-100" type="button" href="{% url 'myrides' %}">Back</a></div>
+                            {% if role != 'driver' %}<div class="col"><a class="btn btn-primary w-100" type="button" href="{% url 'edit_detail' ride.ride_id %}">Edit The Ride</a></div>{% endif %}
+                            <div class="col"><a class="btn btn-primary w-100" type="button" href="{% url 'myrides' %}">Back</a></div>
+                            {% if ride.status == 1 and ride.owner.username == user.username %}<div class="col"><a class="btn btn-danger w-100" type="button" data-bs-toggle="modal" data-bs-target="#cancel_ride_confirmation">Cancel ride</a></div>{% endif %}
+                            {% if ride.status == 1 and user in sharer %}<div class="col"><a class="btn btn-danger w-100" type="button" data-bs-toggle="modal" data-bs-target="#drop_ride_confirmation">Exit ride</a></div>{% endif %}
                         </div>
                     </div>
                 </div>
@@ -219,6 +269,11 @@
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/bs-init.js' %}"></script>
     <script src="{% static 'js/jquery-2.0.0.min.js' %}"></script>
+    <script>
+        setTimeout(function() {
+            $("#EditRideAlert").alert('close')
+        }, 4000);
+    </script>
 </body>
 
 </html>

@@ -27,7 +27,11 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <a class="btn btn-primary" data-bs-dismiss="modal" onclick="redirectToSetting1()">Continue</a>
+            {% if role == 'owner'%}
+            <a class="btn btn-primary" data-bs-dismiss="modal" onclick="submitEditRideFormForOwner()">Continue</a>
+            {% elif role == 'sharer' %}
+            <a class="btn btn-primary" data-bs-dismiss="modal" onclick="submitEditRideFormForSharer()">Continue</a>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -91,6 +95,20 @@
     </nav>
     <div class="w-75 p-4 mx-auto mb-5">
         <div style="margin: 0px;">
+            {% if messages %}
+            <div class="position-relative py-4 py-xl-5" id="message_container">
+                {% for message in messages %}
+                    <div id="message" class="container">
+                        <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible fade show" id="successfulRequestRideAlert"{% endif %} role="alert">
+                        <button type="button" class="btn-close" data-dismiss="alert" data-bs-dismiss="alert" aria-label="Close"></button>
+                        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}<h4>Error: </h4>{% endif %}
+                        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}<h4>Success: </h4>{% endif %}
+                        {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
             <div class="card" style="box-shadow: 2px 0px 3px 1px;">
                 <div class="card-body d-flex flex-column align-items-center">
                     <h3 class="card-title" style="border-color: var(--bs-primary);color: var(--bs-primary);font-weight: bold;">Duber Ride Details</h3>
@@ -133,7 +151,7 @@
                                             {% if driver is None %}
                                                 <span style="color: var(--bs-primary);">Not Assigned</span>
                                             {% else %}
-                                                <span style="color: var(--bs-primary);">{{ driver.username }}</span>
+                                                <span style="color: var(--bs-primary);">{{ driver_user.username }}</span>
                                             {% endif %}</span></div>
                                     </div>
                                 </div>
@@ -142,7 +160,13 @@
                                 <div class="col">
                                     <div class="row">
                                         <div class="col col-sm-2 p-2" style="border-width: 2px;border-top-style: solid;border-bottom-style: solid;border-color: rgba(1,33,105,0.5);border-left-style: solid;"><strong class="col-sm-2" style="color: var(--bs-primary);">Ride Destination</strong></div>
-                                        <div class="col col-sm-10 p-2" style="border-width: 2px;border-style: solid;border-color: rgba(1,33,105,0.5);"><input class="form-control w-100" name="ride_destination" type="text" value="{{ ride.dst_addr }}"></div>
+                                        <div class="col col-sm-10 p-2" style="border-width: 2px;border-style: solid;border-color: rgba(1,33,105,0.5);">
+                                            {% if role == 'owner' and ride.status == 1 %}
+                                                <input class="form-control w-100" name="ride_destination" type="text" value="{{ ride.dst_addr }}">
+                                            {% else %}
+                                                <span style="color: var(--bs-primary);">{{ ride.dst_addr }}</span>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -164,7 +188,13 @@
                                 <div class="col">
                                     <div class="row">
                                         <div class="col col-sm-4 p-2" style="border-width: 2px;border-top-style: solid;border-bottom-style: solid;border-color: rgba(1,33,105,0.5);border-left-style: solid;"><strong class="col-sm-2" style="color: var(--bs-primary);">Desired Arrival Time (Owner)</strong></div>
-                                        <div class="col col-sm-8 p-2" style="border-width: 2px;border-style: solid;border-color: rgba(1,33,105,0.5);"><input type="datetime-local" name="desired_arrival_time_owner" value="{{ ride.owner_desired_arrival_time|date:'Y-m-d\TH:i' }}" class="form-control" placeholder="yyyy-mm-dd hh:mm:ss" id="id_owner_desired_arrival_time"></div>
+                                        <div class="col col-sm-8 p-2" style="border-width: 2px;border-style: solid;border-color: rgba(1,33,105,0.5);">
+                                            {% if role == 'owner' and ride.status == 1 %}
+                                            <input type="datetime-local" name="desired_arrival_time_owner" value="{{ ride.owner_desired_arrival_time|date:'Y-m-d\TH:i' }}" class="form-control" placeholder="yyyy-mm-dd hh:mm:ss" id="id_owner_desired_arrival_time">
+                                            {% else %}
+                                            <span style="color: var(--bs-primary);">{{ ride.owner_desired_arrival_time }}</span>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -172,7 +202,13 @@
                                 <div class="col">
                                     <div class="row">
                                         <div class="col col-sm-4 p-2" style="border-width: 2px;border-top-style: solid;border-bottom-style: solid;border-color: rgba(1,33,105,0.5);border-left-style: solid;"><strong class="col-sm-2" style="color: var(--bs-primary);">Passenger Num. (Owner)</strong></div>
-                                        <div class="col col-sm-8 p-2" style="color: var(--bs-primary);border-width: 2px;border-style: solid;border-color: rgba(1,33,105,0.5);"><input class="form-control w-100" name="passenger_number_owner" type="text" value = "{{ ride.num_passengers_owner_party }}"></div>
+                                        <div class="col col-sm-8 p-2" style="color: var(--bs-primary);border-width: 2px;border-style: solid;border-color: rgba(1,33,105,0.5);">
+                                            {% if role == 'owner' and ride.status == 1 %}
+                                                <input class="form-control w-100" name="passenger_number_owner" type="number" value="{{ ride.num_passengers_owner_party }}" min="1">
+                                            {% else %}
+                                                <span style="color: var(--bs-primary);">{{ ride.num_passengers_owner_party }}</span>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -183,41 +219,75 @@
                                             <div class="row">
                                                 <div class="col col-sm-2 p-2" style="border-width: 2px;border-top-style: solid;border-bottom-style: solid;border-color: rgba(1,33,105,0.5);border-left-style: solid;"><strong class="col-sm-2" style="color: var(--bs-primary);">Shareable?</strong></div>
                                                 <div class="col col-sm-10 p-2" style="border-width: 2px;border-style: solid;border-color: rgba(1,33,105,0.5);">
+                                                    {% if role == 'owner' and ride.status == 1 %}
                                                     <select name ="shareable" class="form-select">
                                                         <option value="1" {% if ride.is_shareable == True %}selected{% endif %}>Yes</option>
                                                         <option value="2" {% if ride.is_shareable == False %}selected{% endif %}>No</option>
-                                                    </select></div>
+                                                    </select>
+                                                    {% else %}
+                                                        <span style="color: var(--bs-primary);">{% if ride.is_shareable == True %}Yes{% elif ride.is_shareable == False %}No{% endif %}</span>
+                                                    {% endif %}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row mt-2 m-auto" id="ride_sharer" style="width: 98%;">
-                                <div class="col col-sm-2 p-2" style="border-width: 2px;border-top-style: solid;border-bottom-style: solid;border-color: rgba(1,33,105,0.5);border-left-style: solid;"><strong class="col-sm-2" style="color: var(--bs-primary);">Ride Sharer</strong></div>
+                                <div class="col col-sm-2 p-2" style="border-width: 2px;border-top-style: solid;border-bottom-style: solid;border-color: rgba(1,33,105,0.5);border-left-style: solid;"><strong class="col-sm-2" style="color: var(--bs-primary);">Current Ride Sharer</strong></div>
                                 <div class="col col-sm-10 p-2" style="border-width: 2px;border-style: solid;border-color: rgba(1,33,105,0.5);">
-
-                                    {% if sharer is None %}
-                                        <p style="color: var(--bs-primary);">None</p>
+                                    {% if sharer|length == 0 %}
+                                    <p style="color: var(--bs-primary);">None</p>
                                     {% else %}
-                                        <p style="color: var(--bs-primary);">{{ sharer.username }}</p>
+                                    <p style="color: var(--bs-primary);">{% for user, num in sharer_num_passenger_mapping.items %}{{ user.username }} ({{ num }}){% endfor %}</p>
                                     {% endif %}
                                 </div>
                             </div>
+                            {% if role == "sharer" %}
+                            <div class="row mt-2 m-auto" id="num_passengers_sharer_party" style="width: 98%;">
+                                <div class="col col-sm-2 p-2" style="border-width: 2px;border-top-style: solid;border-bottom-style: solid;border-color: rgba(1,33,105,0.5);border-left-style: solid;"><strong class="col-sm-2" style="color: var(--bs-primary);">Sharer Num (Your party)</strong></div>
+                                <div class="col col-sm-10 p-2" style="border-width: 2px;border-style: solid;border-color: rgba(1,33,105,0.5);">
+                                    <input class="form-control w-100" name="current_sharer_num_passenger" type="number" value="{{ current_sharer_num_passenger }}" min="1">
+                                </div>
+                            </div>
+                            {% endif %}
                             <div class="row mt-4 m-auto" id="desired_vehicle_type" style="width: 98%">
                                 <div class="col col-sm-2 p-2" style="border-width: 2px;border-top-style: solid;border-bottom-style: solid;border-color: rgba(1,33,105,0.5);border-left-style: solid;"><strong class="col-sm-2" style="color: var(--bs-primary);">Desired Vehicle Type</strong></div>
                                 <div class="col col-sm-10 p-2" style="border-width: 2px;border-style: solid;border-color: rgba(1,33,105,0.5);">
                                     <span style="color: var(--bs-primary);">
-                                        <select name= "desired_vehicle_type" class="form-select">
-                                            <option value="1" {% if ride.owner_desired_vehicle_type == 1 %}selected{% endif %}>DuberX</option>
-                                            <option value="2" {% if ride.owner_desired_vehicle_type == 2 %}selected{% endif %}>DuberXL</option>
-                                            <option value="3" {% if ride.owner_desired_vehicle_type == 3 %}selected{% endif %}>Duber Luxury</option>
-                                        </select>
-                                    </span></div>
+                                        {% if role == 'owner' and ride.status == 1 %}
+                                            <select name= "desired_vehicle_type" class="form-select">
+                                                <option value="1" {% if ride.owner_desired_vehicle_type == 1 %}selected{% endif %}>DuberX</option>
+                                                <option value="2" {% if ride.owner_desired_vehicle_type == 2 %}selected{% endif %}>DuberXL</option>
+                                                <option value="3" {% if ride.owner_desired_vehicle_type == 3 %}selected{% endif %}>Duber Luxury</option>
+                                            </select>
+                                        {% else %}
+                                            {% if ride.owner_desired_vehicle_type == 1 %}
+                                                DuberX
+                                            {% elif ride.owner_desired_vehicle_type == 2 %}
+                                                DuberXL
+                                            {% elif ride.owner_desired_vehicle_type == 3%}
+                                                Duber Luxury
+                                            {% else %}
+                                                None
+                                            {% endif %}
+                                        {% endif %}
+                                    </span>
+                                </div>
                             </div>
                             <div class="row mt-2 m-auto mb-2" id="Special-Request" style="width: 98%">
                                 <div class="col col-sm-2 p-2" style="border-width: 2px;border-top-style: solid;border-bottom-style: solid;border-color: rgba(1,33,105,0.5);border-left-style: solid;"><strong class="col-sm-2" style="color: var(--bs-primary);">Special Request</strong></div>
-                                <div class="col col-sm-10 p-2" style="border-width: 2px;border-style: solid;border-color: rgba(1,33,105,0.5);"><input class="form-control w-100" name="special_request" type="text" value = "{{ ride.special_requests }}"></div>
-
+                                <div class="col col-sm-10 p-2" style="border-width: 2px;border-style: solid;border-color: rgba(1,33,105,0.5);">
+                                    {% if role == 'owner' and ride.status == 1 %}
+                                    <input class="form-control w-100" name="special_request" type="text" value="{{ ride.special_requests }}">
+                                    {% else %}
+                                        {% if ride.special_requests|length == 0 %}
+                                            <p style="color: var(--bs-primary);">None</p>
+                                        {% else %}
+                                            <p style="color: var(--bs-primary);">{{ ride.special_requests }}</p>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -246,7 +316,7 @@
     <script src="{% static 'js/Multi-step-form-script.js' %}"></script>
 </body>
  <script>
-    function redirectToSetting1() {
+    function submitEditRideFormForOwner() {
         function isPositiveInteger(value) {
             return Number.isInteger(value)  && value > 0 && value<= 8 ;
         }
@@ -280,7 +350,27 @@
             document.getElementById("edit_detail_form").submit();
         }
     }
+    
+    function submitEditRideFormForSharer() {
+        function isPositiveInteger(value) {
+            return Number.isInteger(value) && value > 0 && value <= 8;
+        }
+        var current_sharer_num_passenger = document.forms["edit_detail_form"]["current_sharer_num_passenger"].value;
+        var isError = false;
+        var message = "";
+        if (current_sharer_num_passenger == null || current_sharer_num_passenger == "") {
+            message += "Passenger Number is blank, please fill in all required fields\n";
+            isError = true;
+        }
+        if (isPositiveInteger(parseInt(current_sharer_num_passenger)) === false){
+            message += "Passenger Number should be equal or less than 8, please fill in all required fields\n";
+            isError = true;
+        }
+        if (isError) {
+            alert(message);
+        }else{
+            document.getElementById("edit_detail_form").submit();
+        }
+    }
  </script>
-
-
 </html>
