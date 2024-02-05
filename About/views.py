@@ -13,7 +13,7 @@ def ride_owner_about(request):
 
 
 def ride_sharer_about(request):
-    return HttpResponse("Ride Sharer About")
+    return render(request, 'sharer_about.html')
     # return render(request, 'ride_sharer_about.html')
 
 
