@@ -20,8 +20,8 @@
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link" href="{% url 'driver_about' %}">Driver</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Ride Owner</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Ride Sharer</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'ride_owner_about' %}">Ride Owner</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'ride_sharer_about' %}">Ride Sharer</a></li>
                 </ul>
 
                 {% if not user.is_authenticated %}
