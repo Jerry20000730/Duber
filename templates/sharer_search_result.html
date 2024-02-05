@@ -88,16 +88,16 @@
                 </div>
             </div>
         </div>
-        {% if my_ride_number == 0 %}
+        {% if res_ride_number == 0 %}
         <div id="databox" class="no-display">
             <div class="row" style="height: 60vh">
                <div class="col" style="text-align: center">
-                   <h2 style="opacity: 0.6">You currently do not have any rides in record</h2>
+                   <h2 style="opacity: 0.6">No ride has been found</h2>
                </div>
             </div>
         </div>
         {% endif %}
-        {% if my_ride_number != 0 %}
+        {% if res_ride_number != 0 %}
         <div id="databox" class="no-display">
             <div class="row">
             {% if rides|length != 0 %}

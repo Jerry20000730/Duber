@@ -1,6 +1,7 @@
 from django import forms
 from django.utils import timezone
 
+from Duber.settings import RideStatus
 from Ride.models import Ride
 
 
@@ -39,9 +40,15 @@ class DuberRideRequestForm(forms.ModelForm):
 
 class RoleBasedFilteringForm(forms.Form):
     role = forms.MultipleChoiceField(label="Filter by role",
-                             choices=[('owner', 'Owner'), ('driver', 'Driver'), ('sharer', 'Sharer')],
-                             widget=forms.CheckboxSelectMultiple,
-                             required=False)
+                                     choices=[('owner', 'Owner'), ('driver', 'Driver'), ('sharer', 'Sharer')],
+                                     widget=forms.CheckboxSelectMultiple,
+                                     required=False)
+
+    status = forms.MultipleChoiceField(label="Filter by status",
+                                       choices=[(RideStatus.OPEN, 'Open'), (RideStatus.CONFIRM, 'Confirm'),
+                                                (RideStatus.COMPLETE, 'Completed')],
+                                       widget=forms.CheckboxSelectMultiple,
+                                       required=False)
 
     def __init__(self, *args, **kwargs):
         super(RoleBasedFilteringForm, self).__init__(*args, **kwargs)
