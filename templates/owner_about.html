@@ -21,7 +21,7 @@
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link" href="{% url 'driver_about' %}">Driver</a></li>
                     <li class="nav-item"><a class="nav-link active" href="{% url 'ride_owner_about' %}">Ride Owner</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Ride Sharer</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'ride_sharer_about' %}">Ride Sharer</a></li>
                 </ul>
                 {% if not user.is_authenticated %}
                 <div class="row">
@@ -88,5 +88,16 @@
             </div>
         </div>
     </div>
+        <footer class="text-center bg-primary mt-auto w-100" style="height: 218.983px">
+                <div class="container text-white py-4 py-lg-5">
+                    <ul class="list-inline">
+                        <li class="list-inline-item me-4"><a class="link-light" href="{% url 'homepage' %}">Home</a></li>
+                        <li class="list-inline-item me-4"><a class="link-light" href="{% url 'about' %}">About</a></li>
+                        <li class="list-inline-item"><a class="link-light" href="{% url 'contact' %}">Contact</a></li>
+                    </ul>
+                    <p style="color: var(--bs-white);">Created by Fangcheng (fg96) and Kenan (kd305)</p>
+                    <p style="color: var(--bs-white);">Copyright © 2024 Duber</p>
+                </div>
+            </footer>
 </body>
 </html>
