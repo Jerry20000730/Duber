@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>About (Owner)</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/AlfaSlabOne.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Allura.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bs-theme-overrides.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Banner-Heading-Image-images.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Navbar-Centered-Links-icons.css' %}">
+</head>
+
+<body class="d-flex flex-column h-100">
+    <nav class="navbar navbar-expand sticky-top py-3" style="height: 120px;width: auto;padding: 16px 0px;text-align: center;position: relative;overflow: visible;transform: translate(0px);">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="{% url 'homepage' %}"><span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"><img class="border rounded" src="{% static 'img/duber.png' %}" width="50"></span><span>&nbsp;&nbsp;<strong style="color: #012169;">Duber</strong></span></a>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'driver_about' %}">Driver</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'ride_owner_about' %}">Ride Owner</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Ride Sharer</a></li>
+                </ul>
+                {% if not user.is_authenticated %}
+                <div class="row">
+                    <div class="col"><a class="btn btn-primary" role="button" href="{% url 'login' %}" style="font-weight: bold;border-style: solid;/*border-color: var(--bs-emphasis-color);*//*background: rgba(1,33,105,0.63);*/">Login</a></div>
+                    <div class="col"><a class="btn btn-primary text-bg-light" role="button" href="{% url 'register' %}" style="font-weight: bold;border-style: solid;/*border-color: var(--bs-emphasis-color);*//*background: rgba(1,33,105,0.63);*/width: 94px;">Sign Up</a></div>
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="col"><a class="btn btn-primary" role="button" href="{% url 'myrides' %}" style="font-weight: bold;border-style: solid;/*border-color: var(--bs-emphasis-color);*//*background: rgba(1,33,105,0.63);*/">My Rides</a></div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <div class="w-75 m-auto pb-5">
+        <div class="card">
+            <div class="card-body p-2">
+                <div class="container py-4 py-xl-5">
+                    <div class="row mb-3" id="driver_info_title">
+                        <div class="col-md-8 col-xl-6 text-center mx-auto">
+                            <h2>Duber Owner User Guide</h2>
+                            <p>Last updated: 2024-02-02</p>
+                            <div class="bs-icon-xl bs-icon-circle bs-icon-primary"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16" style="font-size: 35px;">
+                                <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6"/>
+                            </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-5" id="owner_info_intro">
+                        <div class="col">
+                            <h2>Owner Intro</h2>
+                            <p style="font-size: 20px;">Most of the duber users are <strong>owner</strong> when they signed up. Owner is a concept when it comes to the ride request. Owner is the person who creates the ride request. 
+                        </div>
+                    </div>
+                    <div class="row mb-5" id="driver_info_register">
+                        <div class="col">
+                            <h2>How to register as a owner?</h2>
+                            <p style="font-size: 20px;">There is no specific step to become an "owner" (owner is a concept when it comes to the ride request). Once you signup and login, you are officially an user. You can create a ride request and become an owner.</p><img class="img-thumbnail img-fluid" src="{% static 'img/owner_info_1.png' %}">
+                        </div>
+                    </div>
+                    <div class="row mb-5" id="driver_info_search">
+                        <div class="col">
+                            <h2>How to request a ride</h2>
+                            <p style="font-size: 20px;">Go to 'Request an ride' and fill in the form. Requesting a ride should involve specifying: <br>&nbsp; &nbsp;1) a required arrival (date & time) <br>&nbsp; &nbsp;2) the number of total passengers from the owner’s party<br>&nbsp; &nbsp;3) <strong style="color: red">[optional]</strong> a vehicle type and any other special requests info. After submitting the form, the ride request will be created and the owner will be able to see the ride request in the 'My Rides' page.</p><img class="img-thumbnail img-fluid" src="{% static 'img/owner_info_2.png' %}">
+                        </div>
+                    </div>
+                    <div class="row mb-5" id="driver_ride_edit">
+                        <div class="col">
+                            <h2>How to edit a ride</h2>
+                            <p style="font-size: 20px;">Go to any of the ride at "My Rides" section and select <strong>"Edit"</strong> button. </p><img class="img-thumbnail img-fluid" src="{% static 'img/owner_info_3.png' %}">
+                            <p style="font-size: 20px;">Edit anything you like as long as the ride status is <strong>OPEN</strong> (<strong style="color:red">Note</strong>: You cannot edit the ride once the ride status changed to <strong>CONFIRMED</strong>)</p>
+                            <p style="font-size: 20px;">There are two scenarios that worth mentioning:<br>&nbsp; &nbsp;1) You can edit the number of passenger if the ride has not been picked by a driver. However, if you have specified the desired vehicle, then the number of passenger cannot exceed the maximum number of vehicle capacity. <br>&nbsp; &nbsp;2) If one driver has been assigned with this ride, you cannot edit anything else except the number of passenger in your side. Also, you cannot have passenger more than the vehicle capacity. <img class="img-thumbnail img-fluid" src="{% static 'img/owner_info_4.png' %}"><img class="img-thumbnail img-fluid" src="{% static 'img/owner_info_5.png' %}"></p>
+                            <p style="font-size: 20px;">If the user designated passenger number exceeds the number of passengers the vehicle can contain, an error will be given. <img class="img-thumbnail img-fluid" src="{% static 'img/owner_info_6.png' %}"> After editing, click <strong>"Save"</strong> button to save the changes.</p>
+                        </div>
+                    </div>
+                    <div class="row mb-5" id="driver_ride_cancel">
+                        <div class="col">
+                            <h2>How to cancel a ride</h2>
+                            <p style="font-size: 20px;">While it is not encouraged to cancel the ride, our policy stipulates that as long as the ride's status is <strong>OPEN</strong>, the owner can choose to cancel the ride. After cancel the ride, the driver and sharer will receive a email notification states that the ride has been cancelled. The ride cannot be cancelled after the driver has picked the user and confirm the ride (which means the ride's status has been changed to <strong>CONFIRM</strong><img class="img-thumbnail img-fluid" src="{% static 'img/owner_info_7.png' %}"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

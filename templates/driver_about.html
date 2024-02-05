@@ -20,7 +20,7 @@
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link active" href="{% url 'driver_about' %}">Driver</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Ride Owner</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'ride_owner_about' %}">Ride Owner</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Ride Sharer</a></li>
                 </ul>
                 {% if not user.is_authenticated %}
@@ -42,7 +42,7 @@
                 <div class="container py-4 py-xl-5">
                     <div class="row mb-3" id="driver_info_title">
                         <div class="col-md-8 col-xl-6 text-center mx-auto">
-                            <h2>Duber Driver</h2>
+                            <h2>Duber Driver User Guide</h2>
                             <p>Last updated: 2024-02-02</p>
                             <div class="bs-icon-xl bs-icon-circle bs-icon-primary"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-steering-wheel" style="font-size: 35px;">
                                     <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>

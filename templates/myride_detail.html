@@ -274,6 +274,16 @@
             $("#EditRideAlert").alert('close')
         }, 4000);
     </script>
+    <script>
+        $(document).ready(function() {
+            // Function to remove the parent container when the alert is closed
+            $('#EditRideAlert').on('closed.bs.alert', function () {
+                console.log('remove');
+                $("#message_container").remove();
+                $("#message").remove();
+            });
+        });
+    </script>
 </body>
 
 </html>
