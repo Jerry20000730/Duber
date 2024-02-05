@@ -213,7 +213,7 @@
                                 {% if sharer|length == 0 %}
                                     <p style="color: var(--bs-primary);">None</p>
                                 {% else %}
-                                    <p style="color: var(--bs-primary);">{% for user, num in sharer_num_passenger_mapping.items %}{{ user.username }} ({{ num }}) {% endfor %}</p>
+                                    <p style="color: var(--bs-primary);">{% for user, num in sharer_num_passenger_mapping.items %}{{ user.username }} ({{ num }})  {% endfor %}</p>
                                 {% endif %}
                             </div>
                         </div>

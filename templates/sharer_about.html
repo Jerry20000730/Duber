@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>About (driver)</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/AlfaSlabOne.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Allura.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bs-theme-overrides.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Banner-Heading-Image-images.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Navbar-Centered-Links-icons.css' %}">
+</head>
+
+<body class="d-flex flex-column h-100">
+    <nav class="navbar navbar-expand sticky-top py-3" style="height: 120px;width: auto;padding: 16px 0px;text-align: center;position: relative;overflow: visible;transform: translate(0px);">
+        <div class="container"><a class="navbar-brand d-flex align-items-center" href="{% url 'homepage' %}"><span class="bs-icon-sm bs-icon-rounded bs-icon-primary d-flex justify-content-center align-items-center me-2 bs-icon"><img class="border rounded" src="{% static 'img/duber.png' %}" width="50"></span><span>&nbsp;&nbsp;<strong style="color: #012169;">Duber</strong></span></a>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'driver_about' %}">Driver</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Ride Owner</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Ride Sharer</a></li>
+                </ul>
+                {% if not user.is_authenticated %}
+                <div class="row">
+                    <div class="col"><a class="btn btn-primary" role="button" href="{% url 'login' %}" style="font-weight: bold;border-style: solid;/*border-color: var(--bs-emphasis-color);*//*background: rgba(1,33,105,0.63);*/">Login</a></div>
+                    <div class="col"><a class="btn btn-primary text-bg-light" role="button" href="{% url 'register' %}" style="font-weight: bold;border-style: solid;/*border-color: var(--bs-emphasis-color);*//*background: rgba(1,33,105,0.63);*/width: 94px;">Sign Up</a></div>
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="col"><a class="btn btn-primary" role="button" href="{% url 'myrides' %}" style="font-weight: bold;border-style: solid;/*border-color: var(--bs-emphasis-color);*//*background: rgba(1,33,105,0.63);*/">My Rides</a></div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <div class="w-75 m-auto pb-5">
+        <div class="card">
+            <div class="card-body p-2">
+                <div class="container py-4 py-xl-5">
+                    <div class="row mb-3" id="driver_info_title">
+                        <div class="col-md-8 col-xl-6 text-center mx-auto">
+                            <h2>Sharer Use Guide</h2>
+                            <p>Last updated: 2024-02-02</p>
+                            <div class="bs-icon-xl bs-icon-circle bs-icon-primary"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icon-tabler-steering-wheel" style="font-size: 35px;">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                                    <path d="M12 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0"></path>
+                                    <path d="M12 14l0 7"></path>
+                                    <path d="M10 12l-6.75 -2"></path>
+                                    <path d="M14 12l6.75 -2"></path>
+                                </svg></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-5" id="driver_info_intro">
+                        <div class="col">
+                            <h2>Sharer Intro</h2>
+                            <p style="font-size: 20px;">As a sharer, you can use search function to find a required ride to join.&nbsp;</p>
+                        </div>
+                    </div>
+                    <div class="row mb-5" id="driver_info_register">
+                        <div class="col">
+                            <h2>How to join a ride?</h2>
+                            <p style="font-size: 20px;">To begin with, click the Seach rides button on the top and select the role, which is 'Sharer'.&nbsp;</p><img class="img-thumbnail img-fluid" src="{% static 'img/search_first.jpg'%}">
+                            <p class="mt-3" style="font-size: 20px;">After entering this function, you should enter the following info to search any rides. The system will automatically find the satisfied rides according to the info you provided.<br>&nbsp; &nbsp; 1) Destination Address<br>&nbsp; &nbsp; 2) Arrival Time Window<br>&nbsp; &nbsp; 3) Number of Passenger<br>By clicking the search button, the page will redirect to the result page, while you can click join button to join a specific ride.</p><img class="img-thumbnail img-fluid" src="{% static 'img/search_second.png'%}">
+                            <h2 class="pt-5">How to edit your info after joining?</h2>
+                            <p class="mt-3" style="font-size: 20px;">If you want to edit your info after join a ride, you can click the Detail button of a ride and click edit button to the following page. Here, you are only allowed to edit you passenger number. The input number should be larger than 0. The system will also detect whether the number is acceptable for this ride according to the car type and current number of passenger.</p><img class="img-thumbnail img-fluid" src="{% static 'img/join_edit.jpg'%}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="text-center bg-primary mt-auto w-100" style="height: 218.983px">
+        <div class="container text-white py-4 py-lg-5">
+            <ul class="list-inline">
+                <li class="list-inline-item me-4"><a class="link-light" href="{% url 'homepage' %}">Home</a></li>
+                <li class="list-inline-item me-4"><a class="link-light" href="{% url 'about' %}">About</a></li>
+                <li class="list-inline-item"><a class="link-light" href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+            <p style="color: var(--bs-white);">Created by Fangcheng (fg96) and Kenan (kd305)</p>
+            <p style="color: var(--bs-white);">Copyright © 2024 Duber</p>
+        </div>
+    </footer>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/bs-init.js' %}"></script>
+    <script src="{% static 'js/Multi-step-form-script.js'%}"></script>
+</body>
+
+</html>

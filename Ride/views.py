@@ -107,7 +107,7 @@ def sharer_search_result(request):
             ~Q(driver_id__isnull=True) &
             Q(is_shareable=True) &
             Q(num_passengers_owner_party__lte=F('driver__maximum_passenger_number') - num_passenger_sharer_party - F(
-                'num_passengers_owner_party'))
+                'num_passengers_sharer_party'))
         )
         rides = rides.exclude(sharer__in=[request.user])
         return render(request, 'sharer_search_result.html',
