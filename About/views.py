@@ -8,8 +8,7 @@ def driver_about(request):
 
 
 def ride_owner_about(request):
-    return HttpResponse("Ride Owner About")
-    # return render(request, 'ride_owner_about.html')
+    return render(request, 'owner_about.html')
 
 
 def ride_sharer_about(request):

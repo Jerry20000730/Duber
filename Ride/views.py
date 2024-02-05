@@ -109,6 +109,7 @@ def sharer_search_result(request):
             Q(num_passengers_owner_party__lte=F('driver__maximum_passenger_number') - num_passenger_sharer_party - F(
                 'num_passengers_owner_party'))
         )
+        rides = rides.exclude(sharer__in=[request.user])
         return render(request, 'sharer_search_result.html',
                       context={'rides': rides,
                                'res_ride_number': len(rides),
@@ -385,7 +386,6 @@ def edit_detail(request, pk):
         if ride.owner == request.user:
             new_ride_destination = request.POST.get('ride_destination')
             new_desired_arrival_time_owner = request.POST.get('desired_arrival_time_owner')
-
             new_passenger_number_owner = request.POST.get('passenger_number_owner')
 
             if ride.driver is not None:
@@ -400,20 +400,29 @@ def edit_detail(request, pk):
             new_shareable = request.POST.get('shareable')
             if (new_shareable == "1"):
                 new_shareable = True
+            elif (new_shareable is None):
+                new_shareable = None
             else:
                 new_shareable = False
             new_desired_vehicle_type = request.POST.get('desired_vehicle_type')
             new_special_request = request.POST.get('special_request')
 
             ride = Ride.objects.filter(ride_id=pk)
-            ride.update(dst_addr=new_ride_destination)
-            ride.update(owner_desired_arrival_time=new_desired_arrival_time_owner)
-            ride.update(num_passengers_owner_party=new_passenger_number_owner)
-            ride.update(is_shareable=new_shareable)
-            ride.update(owner_desired_vehicle_type=new_desired_vehicle_type)
-            ride.update(special_requests=new_special_request)
+            if new_ride_destination is not None:
+                ride.update(dst_addr=new_ride_destination)
+            if new_desired_arrival_time_owner is not None:
+                ride.update(owner_desired_arrival_time=new_desired_arrival_time_owner)
+            if new_passenger_number_owner is not None:
+                ride.update(num_passengers_owner_party=new_passenger_number_owner)
+            if new_shareable is not None:
+                ride.update(is_shareable=new_shareable)
+            if new_desired_vehicle_type is not None:
+                ride.update(owner_desired_vehicle_type=new_desired_vehicle_type)
+            if new_special_request is not None:
+                ride.update(special_requests=new_special_request)
             ride.update(time_uptate=timezone.now())
 
+            messages.add_message(request, messages.SUCCESS, "You have successfully updated the ride!")
             return redirect('ride_detail', pk=pk)
         else:
             driver = DuberDriver.objects.get(duber_user=ride.driver)

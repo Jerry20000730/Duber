@@ -213,7 +213,7 @@
                                 {% if sharer|length == 0 %}
                                     <p style="color: var(--bs-primary);">None</p>
                                 {% else %}
-                                    <p style="color: var(--bs-primary);">{% for user, num in sharer_num_passenger_mapping.items %}{{ user.username }} ({{ num }}){% endfor %}</p>
+                                    <p style="color: var(--bs-primary);">{% for user, num in sharer_num_passenger_mapping.items %}{{ user.username }} ({{ num }}) {% endfor %}</p>
                                 {% endif %}
                             </div>
                         </div>
@@ -273,6 +273,16 @@
         setTimeout(function() {
             $("#EditRideAlert").alert('close')
         }, 4000);
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Function to remove the parent container when the alert is closed
+            $('#EditRideAlert').on('closed.bs.alert', function () {
+                console.log('remove');
+                $("#message_container").remove();
+                $("#message").remove();
+            });
+        });
     </script>
 </body>
 
