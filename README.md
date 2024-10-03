@@ -1,4 +1,4 @@
-# ECE568 - Homework 1
+# Duber - Ride Sharing App
 
 ## Project Brief
 <img src="duber.png" width=20% />
